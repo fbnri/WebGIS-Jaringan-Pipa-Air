@@ -18,12 +18,12 @@
             <form method="GET" class="flex items-center gap-2">
 
                 {{-- SEARCH --}}
-                <input type="text" name="search" value="{{ request('search') }}"
+                <input type="text" name="search" autocomplete="off" value="{{ request('search') }}"
                     placeholder="Cari pipa..."
                     class="px-3 py-2 rounded-xl border text-sm focus:ring-2 focus:ring-blue-500">
 
                 {{-- FILTER BUTTON --}}
-                <button type="button" id="filterToggle"
+                <button type="button" id="filterToggle" title="Filter"
                     class="w-10 h-10 bg-white rounded-xl shadow flex items-center justify-center hover:bg-gray-100">
                     <i class="fa-solid fa-filter text-gray-600"></i>
                 </button>
@@ -103,12 +103,6 @@
                                 <td class="md:sticky md:left-0 z-0 bg-white px-4 py-3">{{ $index + 1 }}</td>
                                 <td class="md:sticky md:left-[70px] z-0 bg-white px-4 py-3 min-w-[220px]">
                                     <div class="flex items-center gap-2 font-semibold text-gray-800">
-                                        @if($pipe->installed_at)
-                                            <span class="w-2 h-2 rounded-full bg-blue-600"></span>
-                                        @else
-                                            <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
-                                        @endif
-
                                         {{ $pipe->name }}
                                     </div>
                                 </td>
@@ -162,22 +156,23 @@
 
                                         {{-- EDIT --}}
                                         <button
-                                        class="btnEdit w-8 h-8 rounded-lg bg-blue-100 hover:bg-blue-200 text-blue-600 flex items-center justify-center transition"
+                                        class="btnEdit w-9 h-9 rounded-xl bg-amber-100 hover:bg-ambe-200 text-amber-600 flex items-center justify-center transition"
+                                        title="Edit"
                                         data-id="{{ $pipe->id }}"
                                         data-name="{{ $pipe->name }}"
                                         data-type="{{ $pipe->pipe_type }}"
                                         data-planned="{{ $pipe->planned_at }}"
                                         data-installed="{{ $pipe->installed_at }}"
                                         data-length="{{ $pipe->length }}">
-                                            <i class="fa-solid fa-pen text-xs"></i>
+                                            <i class="fa-solid fa-pen-to-square"></i>
                                         </button>
 
                                         {{-- DELETE --}}
                                         <button
-                                        class="btnDelete w-8 h-8 rounded-lg bg-red-100 hover:bg-red-200 text-red-600 flex items-center justify-center transition"
+                                        class="btnDelete w-9 h-9 rounded-xl bg-red-100 hover:bg-red-200 text-red-600 flex items-center justify-center transition"
+                                        title="Hapus"
                                         data-id="{{ $pipe->id }}">
-
-                                            <i class="fa-solid fa-trash text-xs"></i>
+                                            <i class="fa-solid fa-trash"></i>
                                         </button>
                                     </div>
                                 </td>

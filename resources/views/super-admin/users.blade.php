@@ -9,7 +9,7 @@
     <div class="p-4 md:p-6 space-y-6">
 
         {{-- HEADER --}}
-        <div class="flex items-center justify-between">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
                 <h1 class="text-2xl font-bold text-gray-800">
                     Kelola Admin
@@ -18,7 +18,7 @@
                     Manajemen akun administrator
                 </p>
             </div>
-            <button id="openCreateAdmin" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl shadow text-sm">
+            <button id="openCreateAdmin" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl shadow text-sm">
                 <i class="fa-solid fa-plus mr-1"></i>
                 Tambah Admin
             </button>
@@ -26,7 +26,7 @@
 
         {{-- CARD TABLE --}}
         <div class="bg-white rounded-2xl shadow-lg border overflow-hidden">
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto scrollbar-thin">
                 <table class="w-full text-sm">
 
                     {{-- HEADER TABLE --}}
@@ -71,31 +71,32 @@
 
                                         {{-- RESET PASSWORD --}}
                                         <form method="POST"
-                                            action="{{ route('super.users.reset',$admin->id) }}">
+                                        action="{{ route('super.users.reset',$admin->id) }}">
                                             @csrf
                                             @method('PUT')
                                             <button
-                                            class="bg-blue-600 hover:bg-blue-700
-                                            text-white px-3 py-2 rounded-lg text-xs">
-                                                Reset Password
+                                            title="Reset Password"
+                                            class="bg-blue-600 hover:bg-blue-700 text-white w-9 h-9 rounded-lg flex items-center justify-center">
+                                                <i class="fa-solid fa-key"></i>
                                             </button>
                                         </form>
 
                                         {{-- DISABLE / ENABLE --}}
                                         <form method="POST"
-                                            action="{{ route('super.users.toggle',$admin->id) }}">
+                                        action="{{ route('super.users.toggle',$admin->id) }}">
                                             @csrf
                                             @method('PUT')
                                             <button
-                                            class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg text-xs">
-                                                {{ $admin->is_active ? 'Disable' : 'Enable' }}
+                                            title="{{ $admin->is_active ? 'Disable Admin' : 'Enable Admin' }}"
+                                            class="bg-red-600 hover:bg-red-700 text-white w-9 h-9 rounded-lg flex items-center justify-center">
+                                                <i class="fa-solid {{ $admin->is_active ? 'fa-user-slash' : 'fa-user-check' }}"></i>
                                             </button>
                                         </form>
 
                                         {{-- EDIT --}}
-                                        <button type="button" data-id="{{ $admin->id }}" data-name="{{ $admin->name }}" data-email="{{ $admin->email }}"
-                                        class="editAdminBtn bg-amber-500 hover:bg-amber-600 text-white px-3 py-2 rounded-lg text-xs">
-                                            Edit
+                                        <button type="button" data-id="{{ $admin->id }}" data-name="{{ $admin->name }}" data-email="{{ $admin->email }}" title="Edit"
+                                        class="editAdminBtn bg-amber-500 hover:bg-amber-600 text-white w-9 h-9 rounded-lg flex items-center justify-center">
+                                            <i class="fa-solid fa-pen-to-square"></i>
                                         </button>
 
                                         {{-- DELETE --}}
@@ -103,9 +104,9 @@
                                             @csrf
                                             @method('DELETE')
 
-                                            <button type="button" data-action="{{ route('super.users.destroy',$admin->id) }}"
-                                            class="deleteAdminBtn bg-gray-800 hover:bg-black text-white px-3 py-2 rounded-lg text-xs">
-                                                Hapus
+                                            <button type="button" data-action="{{ route('super.users.destroy',$admin->id) }}" title="Hapus"
+                                            class="deleteAdminBtn bg-gray-800 hover:bg-black text-white w-9 h-9 rounded-lg flex items-center justify-center">
+                                                <i class="fa-solid fa-trash"></i>
                                             </button>
                                         </form>
                                     </div>
@@ -137,7 +138,7 @@
                     </label>
                     <input type="email" name="email" required class="w-full border rounded-lg p-2">
                 </div>
-                <div class="flex justify-end gap-2 mt-4">
+                <div class="flex flex-col-reverse sm:flex-row justify-end gap-2 mt-4">
                     <button type="button" id="closeCreateAdmin" class="px-4 py-2 border rounded-lg">
                         Batal
                     </button>
@@ -197,7 +198,7 @@
                     </label>
                     <input type="email" name="email" id="editAdminEmail" class="w-full border rounded-lg p-2">
                 </div>
-                <div class="flex justify-end gap-2">
+                <div class="flex flex-col-reverse sm:flex-row justify-end gap-2">
                     <button type="button" id="closeEditAdmin" class="px-4 py-2 border rounded-lg">
                         Batal
                     </button>
