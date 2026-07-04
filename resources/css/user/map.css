@@ -1,0 +1,34 @@
+#layerPanel {
+    transform-origin: top;
+}
+
+#yearIcon {
+    transition: transform 0.2s ease;
+}
+
+#mobileMenu {
+    transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-3px);
+}
+
+.custom-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg fill='none' stroke='%23333' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+}
+
+.leaflet-popup-content-wrapper {
+    border-radius: 12px;
+}
+
+.leaflet-control-zoom {
+    border: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    border-radius: 10px;
+    overflow: hidden;
+}

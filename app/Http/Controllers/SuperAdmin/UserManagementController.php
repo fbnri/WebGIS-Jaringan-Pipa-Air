@@ -10,12 +10,27 @@ use Illuminate\Support\Str;
 
 class UserManagementController extends Controller
 {
-    public function index() {
-        $admins = User::where('role','admin')->get();
+    public function index(Request $request)
+    {
+        $search = $request->search;
+        $admins = User::where('role', 'admin')
+        ->when($search, function ($query) use ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                ->orWhere('email', 'like', "%{$search}%");
+            });
+        })
+
+        ->latest()
+        ->paginate(10)
+        ->withQueryString();
 
         return view(
             'super-admin.users',
-            compact('admins')
+            compact(
+                'admins',
+                'search'
+            )
         );
     }
 

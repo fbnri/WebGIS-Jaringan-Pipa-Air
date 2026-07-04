@@ -1,8 +1,8 @@
 <x-app-layout>
-    <div class="p-4 md:p-6 space-y-6 max-w-full overflow-visible">
+    <div class="p-4 md:p-6 max-w-full h-[calc(100vh-64px)] md:h-[calc(100vh-112px)] flex flex-col min-h-0">
 
         {{-- HEADER --}}
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 relative">
+        <div class="flex-none flex flex-col md:flex-row md:items-center md:justify-between gap-3 relative mb-6">
 
             {{-- TITLE --}}
             <div>
@@ -15,12 +15,12 @@
             </div>
 
             {{-- SEARCH + FILTER --}}
-            <form method="GET" class="flex items-center gap-2">
+            <form method="GET" class="flex items-center gap-2 w-full md:w-auto">
 
                 {{-- SEARCH --}}
                 <input type="text" name="search" autocomplete="off" value="{{ request('search') }}"
                     placeholder="Cari pipa..."
-                    class="px-3 py-2 rounded-xl border text-sm focus:ring-2 focus:ring-blue-500">
+                    class="flex-1 px-3 py-2 rounded-xl border text-sm focus:ring-2 focus:ring-blue-500">
 
                 {{-- FILTER BUTTON --}}
                 <button type="button" id="filterToggle" title="Filter"
@@ -74,16 +74,16 @@
         </div>
 
         {{-- CARD TABLE --}}
-        <div class="bg-white rounded-2xl shadow-lg border">
+        <div class="bg-white rounded-2xl shadow-lg border overflow-hidden flex flex-col flex-1 min-h-0">
 
             {{-- TABLE --}}
-            <div class="overflow-x-auto relative">
+            <div class="table-scroll flex-1 min-h-0 overflow-auto relative">
                 <table class="min-w-max w-full text-sm text-left">
                     
                     {{-- HEADER --}}
-                    <thead class="bg-gray-100 text-gray-600 uppercase text-xs">
+                    <thead class="sticky top-0 z-20 bg-gray-100 text-gray-600 uppercase text-xs">
                         <tr>
-                            <th class="md:sticky md:left-0 z-10 bg-gray-100 px-4 py-3 min-w-[70px]">No</th>
+                            <th class="md:sticky md:left-0 z-10 bg-gray-100 px-4 py-3 min-w-[70px]">No.</th>
                             <th class="md:sticky md:left-[70px] z-10 bg-gray-100 px-4 py-3 min-w-[220px]">Nama</th>
                             <th class="md:sticky md:left-[290px] z-10 bg-gray-100 px-4 py-3 min-w-[160px] md:shadow-[4px_0_6px_-4px_rgba(0,0,0,0.15)]">Jenis</th>
                             @foreach($years as $year)
@@ -97,10 +97,10 @@
                     </thead>
 
                     {{-- BODY --}}
-                    <tbody class="divide-y">
+                    <tbody class="divide-y bg-white">
                         @forelse ($pipes as $index => $pipe)
                             <tr class="hover:bg-blue-50/50 transition">
-                                <td class="md:sticky md:left-0 z-0 bg-white px-4 py-3">{{ $index + 1 }}</td>
+                                <td class="md:sticky md:left-0 z-0 bg-white px-4 py-3">{{ $pipes->firstItem() + $index }}</td>
                                 <td class="md:sticky md:left-[70px] z-0 bg-white px-4 py-3 min-w-[220px]">
                                     <div class="flex items-center gap-2 font-semibold text-gray-800">
                                         {{ $pipe->name }}
@@ -151,8 +151,8 @@
                                 </td>
 
                                 {{-- AKSI --}}
-                                <td class="md:sticky md:right-0 z-0 bg-white px-4 py-3 text-center min-w-[110px] shadow-[-4px_0_6px_-4px_rgba(0,0,0,0.15)]">
-                                    <div class="flex justify-center gap-2">
+                                <td class="md:sticky md:right-0 z-0 bg-white px-4 py-2 text-center min-w-[110px] shadow-[-4px_0_6px_-4px_rgba(0,0,0,0.15)]">
+                                    <div class="flex justify-center items-center gap-2">
 
                                         {{-- EDIT --}}
                                         <button
@@ -187,70 +187,77 @@
                     </tbody>
                 </table>
             </div>
+        </div>
 
-            {{-- MODAL EDIT --}}
-            <div id="editModal" class="fixed inset-0 hidden items-center justify-center bg-black/50 z-50 opacity-0 transition-opacity duration-200">
-                <div class="bg-white w-[90%] sm:max-w-md p-6 rounded-2xl shadow-xl transform scale-95 opacity-0 transition-all duration-200 ease-out modal-content">
-                    <h2 class="text-lg font-semibold mb-4">Edit Data Pipa</h2>
-                    <input type="hidden" id="edit_id">
-                    <div class="space-y-3">
-                        <div>
-                            <label class="text-sm">Nama</label>
-                            <input type="text" id="edit_name" class="w-full border rounded-lg p-2">
-                        </div>
-                        <div>
-                            <label class="text-sm">Jenis</label>
-                            <input type="text" id="edit_type" class="w-full border rounded-lg p-2">
-                        </div>
-                        <div>
-                            <label class="text-sm">Tanggal Direncanakan</label>
-                            <input type="date"
-                                id="edit_planned_at"
-                                class="w-full border rounded-lg p-2">
-                        </div>
-                        <div>
-                            <label class="text-sm">Tanggal Terpasang</label>
-                            <input type="date"
-                                id="edit_installed_at"
-                                class="w-full border rounded-lg p-2">
-                        </div>
-                        <div>
-                            <label class="text-sm">Panjang (m)</label>
-                            <input type="number" id="edit_length" class="w-full border rounded-lg p-2" readonly>
-                        </div>
+        {{-- CARD PAGINATION --}}
+        @if($pipes->hasPages())
+            <div class="mt-4 bg-white rounded-2xl shadow-lg border px-4 md:px-6 py-4">
+                {{ $pipes->links('vendor.pagination.tailwind') }}
+            </div>
+        @endif
+
+        {{-- MODAL EDIT --}}
+        <div id="editModal" class="fixed inset-0 hidden items-center justify-center bg-black/50 z-50 opacity-0 transition-opacity duration-200">
+            <div class="bg-white w-[90%] sm:max-w-md p-6 rounded-2xl shadow-xl transform scale-95 opacity-0 transition-all duration-200 ease-out modal-content">
+                <h2 class="text-lg font-semibold mb-4">Edit Data Pipa</h2>
+                <input type="hidden" id="edit_id">
+                <div class="space-y-3">
+                    <div>
+                        <label class="text-sm">Nama</label>
+                        <input type="text" id="edit_name" class="w-full border rounded-lg p-2">
                     </div>
-                    <div class="flex justify-end mt-6 space-x-2">
-                        <button id="cancelEdit" class="px-4 py-2 border rounded-lg">
-                            Batal
-                        </button>
-                        <button id="saveEdit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
-                            Simpan
-                        </button>
+                    <div>
+                        <label class="text-sm">Jenis</label>
+                        <input type="text" id="edit_type" class="w-full border rounded-lg p-2">
                     </div>
+                    <div>
+                        <label class="text-sm">Tanggal Direncanakan</label>
+                        <input type="date"
+                            id="edit_planned_at"
+                            class="w-full border rounded-lg p-2">
+                    </div>
+                    <div>
+                        <label class="text-sm">Tanggal Terpasang</label>
+                        <input type="date"
+                            id="edit_installed_at"
+                            class="w-full border rounded-lg p-2">
+                    </div>
+                    <div>
+                        <label class="text-sm">Panjang (m)</label>
+                        <input type="number" id="edit_length" class="w-full border rounded-lg p-2" readonly>
+                    </div>
+                </div>
+                <div class="flex justify-end mt-6 space-x-2">
+                    <button type="button" id="cancelEdit" class="px-4 py-2 border rounded-lg">
+                        Batal
+                    </button>
+                    <button type="button" id="saveEdit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
+                        Simpan
+                    </button>
                 </div>
             </div>
         </div>
-    </div>
 
-    {{-- MODAL DELETE --}}
-    <div id="deleteModal" class="fixed inset-0 hidden items-center justify-center bg-black/50 z-50 opacity-0 transition-opacity duration-200">
-        <div class="bg-white w-[90%] sm:max-w-sm p-6 rounded-2xl shadow-xl text-center transform scale-95 opacity-0 transition-all duration-200 modal-content">
-            <div class="mb-4">
-                <i class="fa-solid fa-triangle-exclamation text-red-500 text-3xl"></i>
-            </div>
-            <h2 class="text-lg font-semibold mb-2">Hapus Data</h2>
-            <p class="text-sm text-gray-500 mb-6">
-                Yakin mau hapus data ini? Data tidak bisa dikembalikan.
-            </p>
-            <div class="flex gap-2">
-                <button id="cancelDelete"
-                    class="flex-1 px-4 py-2 border rounded-lg">
-                    Batal
-                </button>
-                <button id="confirmDelete"
-                    class="flex-1 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
-                    Hapus
-                </button>
+        {{-- MODAL DELETE --}}
+        <div id="deleteModal" class="fixed inset-0 hidden items-center justify-center bg-black/50 z-50 opacity-0 transition-opacity duration-200">
+            <div class="bg-white w-[90%] sm:max-w-sm p-6 rounded-2xl shadow-xl text-center transform scale-95 opacity-0 transition-all duration-200 modal-content">
+                <div class="mb-4">
+                    <i class="fa-solid fa-triangle-exclamation text-red-500 text-3xl"></i>
+                </div>
+                <h2 class="text-lg font-semibold mb-2">Hapus Data</h2>
+                <p class="text-sm text-gray-500 mb-6">
+                    Yakin mau hapus data ini? Data tidak bisa dikembalikan.
+                </p>
+                <div class="flex gap-2">
+                    <button type="button" id="cancelDelete"
+                        class="flex-1 px-4 py-2 border rounded-lg">
+                        Batal
+                    </button>
+                    <button type="button" id="confirmDelete"
+                        class="flex-1 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
+                        Hapus
+                    </button>
+                </div>
             </div>
         </div>
     </div>

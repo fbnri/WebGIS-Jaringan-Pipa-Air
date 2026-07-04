@@ -1,9 +1,9 @@
 @extends('layouts.user-panel')
 @section('content')
-    <div class="p-4 md:p-6 space-y-6 max-w-full overflow-visible">
+    <div class="p-4 md:p-6 max-w-full h-[calc(100vh-64px)] md:h-[calc(100vh-112px)] flex flex-col min-h-0">
 
         {{-- HEADER --}}
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 relative">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 relative mb-6">
 
             {{-- TITLE --}}
             <div>
@@ -16,12 +16,12 @@
             </div>
 
             {{-- SEARCH + FILTER --}}
-            <form method="GET" class="flex items-center gap-2">
+            <form method="GET" class="flex items-center gap-2 w-full md:w-auto">
 
                 {{-- SEARCH --}}
                 <input type="text" name="search" value="{{ request('search') }}"
                     placeholder="Cari pipa..."
-                    class="px-3 py-2 rounded-xl border text-sm focus:ring-2 focus:ring-blue-500"
+                    class="flex-1 px-3 py-2 rounded-xl border text-sm focus:ring-2 focus:ring-blue-500"
                     autocomplete="off">
 
                 {{-- FILTER BUTTON --}}
@@ -76,14 +76,14 @@
         </div>
 
         {{-- CARD TABLE --}}
-        <div class="bg-white rounded-2xl shadow-lg border">
+        <div class="bg-white rounded-2xl shadow-lg border overflow-hidden flex flex-col flex-1 min-h-0">
 
             {{-- TABLE --}}
-            <div class="overflow-x-auto relative">
+            <div class="table-scroll flex-1 min-h-0 overflow-auto relative">
                 <table class="min-w-max w-full text-sm text-left">
                     
                     {{-- HEADER --}}
-                    <thead class="bg-gray-100 text-gray-600 uppercase text-xs">
+                    <thead class="sticky top-0 z-20 bg-gray-100 text-gray-600 uppercase text-xs">
                         <tr>
                             <th class="md:sticky md:left-0 z-10 bg-gray-100 px-4 py-3 min-w-[70px]">No</th>
                             <th class="md:sticky md:left-[70px] z-10 bg-gray-100 px-4 py-3 min-w-[220px]">Nama</th>
@@ -98,18 +98,12 @@
                     </thead>
 
                     {{-- BODY --}}
-                    <tbody class="divide-y">
+                    <tbody class="divide-y bg-white">
                         @forelse ($pipes as $index => $pipe)
                             <tr class="hover:bg-blue-50/50 transition">
-                                <td class="md:sticky md:left-0 z-0 bg-white px-4 py-3">{{ $index + 1 }}</td>
+                                <td class="md:sticky md:left-0 z-0 bg-white px-4 py-3">{{ $pipes->firstItem() + $index }}</td>
                                 <td class="md:sticky md:left-[70px] z-0 bg-white px-4 py-3 min-w-[220px]">
                                     <div class="flex items-center gap-2 font-semibold text-gray-800">
-                                        @if($pipe->installed_at)
-                                            <span class="w-2 h-2 rounded-full bg-blue-600"></span>
-                                        @else
-                                            <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
-                                        @endif
-
                                         {{ $pipe->name }}
                                     </div>
                                 </td>
@@ -168,5 +162,12 @@
                 </table>
             </div>
         </div>
+
+        {{-- CARD PAGINATION --}}
+        @if($pipes->hasPages())
+            <div class="mt-4 bg-white rounded-2xl shadow-lg border px-4 md:px-6 py-4">
+                {{ $pipes->links('vendor.pagination.tailwind') }}
+            </div>
+        @endif
     </div>
 @endsection

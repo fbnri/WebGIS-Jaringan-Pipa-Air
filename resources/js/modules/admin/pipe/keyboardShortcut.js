@@ -45,9 +45,7 @@ function initKeyboardShortcut(){
         ){
             e.preventDefault();
 
-            document
-                .getElementById("cancelEdit")
-                .click();
+            document.getElementById("cancelEdit").click();
         }
     });
 }

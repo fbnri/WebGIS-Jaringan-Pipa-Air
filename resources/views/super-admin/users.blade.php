@@ -9,36 +9,50 @@
     <div class="p-4 md:p-6 space-y-6">
 
         {{-- HEADER --}}
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div class="flex-none flex flex-col md:flex-row md:items-center md:justify-between gap-3 relative mb-6">
+
+            {{-- TITLE --}}
             <div>
-                <h1 class="text-2xl font-bold text-gray-800">
+                <h1 class="text-xl md:text-2xl font-bold text-gray-800">
                     Kelola Admin
                 </h1>
                 <p class="text-sm text-gray-500">
                     Manajemen akun administrator
                 </p>
             </div>
-            <button id="openCreateAdmin" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl shadow text-sm">
-                <i class="fa-solid fa-plus mr-1"></i>
-                Tambah Admin
-            </button>
-        </div>
 
-        {{-- CARD TABLE --}}
-        <div class="bg-white rounded-2xl shadow-lg border overflow-hidden">
-            <div class="overflow-x-auto scrollbar-thin">
-                <table class="w-full text-sm">
+            {{-- SEARCH + BUTTON --}}
+            <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                <form method="GET" class="flex items-center gap-2 w-full">
+                    <input type="text" name="search" autocomplete="off" value="{{ request('search') }}" placeholder="Cari nama atau email admin..."
+                    class="flex-1 px-3 py-2 rounded-xl border text-sm focus:ring-2 focus:ring-blue-500">
+                    <button type="submit" class="bg-blue-600 text-white px-3 py-2 rounded-xl text-sm">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </form>
+                <button id="openCreateAdmin" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl shadow text-sm whitespace-nowrap">
+                    <i class="fa-solid fa-plus mr-1"></i>
+                    Tambah Admin
+                </button>
+            </div>
+        </div>
+        <div class="bg-white rounded-2xl shadow-lg border overflow-hidden flex flex-col flex-1 min-h-0">
+            <div class="table-scroll flex-1 min-h-0 overflow-auto relative">
+                <table class="min-w-max w-full text-sm text-left">
 
                     {{-- HEADER TABLE --}}
-                    <thead class="bg-gray-100 text-gray-600 uppercase text-xs">
+                    <thead class="sticky top-0 z-20 bg-gray-100 text-gray-600 uppercase text-xs">
                         <tr>
-                            <th class="px-6 py-4 text-left">
+                            <th class="px-4 py-3 text-left">
+                                No.
+                            </th>
+                            <th class="px-4 py-3 text-left">
                                 Nama
                             </th>
-                            <th class="px-6 py-4 text-left">
+                            <th class="px-4 py-3 text-left">
                                 Email
                             </th>
-                            <th class="px-6 py-4 text-left">
+                            <th class="px-4 py-3 text-left">
                                 Status
                             </th>
                             <th class="px-6 py-4 text-center">
@@ -46,37 +60,38 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y">
+                    <tbody class="divide-y bg-white">
                         @foreach($admins as $admin)
-                            <tr class="hover:bg-gray-50 transition">
-                                <td class="px-6 py-4 font-semibold text-gray-800">
+                            <tr class="hover:bg-blue-50/50 transition">
+                                <td class="px-4 py-3 text-center text-gray-500">
+                                    {{ $admins->firstItem() + $loop->index }}
+                                </td>
+                                <td class="px-4 py-3 font-semibold text-gray-800">
                                     {{ $admin->name }}
                                 </td>
-                                <td class="px-6 py-4 text-gray-600">
+                                <td class="px-4 py-3 text-gray-600">
                                     {{ $admin->email }}
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-4 py-3">
                                     @if($admin->is_active)
-                                        <span class="px-3 py-1 rounded-full text-xs bg-green-100 text-green-700">
+                                        <span class="inline-flex px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
                                             Aktif
                                         </span>
                                     @else
-                                        <span class="px-3 py-1 rounded-full text-xs bg-red-100 text-red-700">
+                                        <span class="inline-flex px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700">
                                             Nonaktif
                                         </span>
                                     @endif
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-4 py-3">
                                     <div class="flex justify-center gap-2">
 
                                         {{-- RESET PASSWORD --}}
-                                        <form method="POST"
-                                        action="{{ route('super.users.reset',$admin->id) }}">
+                                        <form method="POST" action="{{ route('super.users.reset',$admin->id) }}">
                                             @csrf
                                             @method('PUT')
-                                            <button
-                                            title="Reset Password"
-                                            class="bg-blue-600 hover:bg-blue-700 text-white w-9 h-9 rounded-lg flex items-center justify-center">
+                                            <button title="Reset Password"
+                                            class="bg-blue-100 hover:bg-blue-200 text-blue-600 w-9 h-9 rounded-xl flex items-center justify-center">
                                                 <i class="fa-solid fa-key"></i>
                                             </button>
                                         </form>
@@ -86,16 +101,20 @@
                                         action="{{ route('super.users.toggle',$admin->id) }}">
                                             @csrf
                                             @method('PUT')
-                                            <button
-                                            title="{{ $admin->is_active ? 'Disable Admin' : 'Enable Admin' }}"
-                                            class="bg-red-600 hover:bg-red-700 text-white w-9 h-9 rounded-lg flex items-center justify-center">
+
+                                            <button title="
+                                            {{ $admin->is_active ? 'Disable Admin' : 'Enable Admin' }}"
+                                            class="w-9 h-9 rounded-xl flex items-center justify-center transition
+                                            {{ $admin->is_active ? 'bg-red-100 hover:bg-red-200 text-red-600' 
+                                            : 'bg-green-100 hover:bg-green-200 text-green-600' }}
+                                            ">
                                                 <i class="fa-solid {{ $admin->is_active ? 'fa-user-slash' : 'fa-user-check' }}"></i>
                                             </button>
                                         </form>
 
                                         {{-- EDIT --}}
                                         <button type="button" data-id="{{ $admin->id }}" data-name="{{ $admin->name }}" data-email="{{ $admin->email }}" title="Edit"
-                                        class="editAdminBtn bg-amber-500 hover:bg-amber-600 text-white w-9 h-9 rounded-lg flex items-center justify-center">
+                                        class="editAdminBtn bg-amber-100 hover:bg-amber-200 text-amber-600 w-9 h-9 rounded-xl flex items-center justify-center">
                                             <i class="fa-solid fa-pen-to-square"></i>
                                         </button>
 
@@ -105,7 +124,7 @@
                                             @method('DELETE')
 
                                             <button type="button" data-action="{{ route('super.users.destroy',$admin->id) }}" title="Hapus"
-                                            class="deleteAdminBtn bg-gray-800 hover:bg-black text-white w-9 h-9 rounded-lg flex items-center justify-center">
+                                            class="deleteAdminBtn bg-red-100 hover:bg-red-200 text-red-600 w-9 h-9 rounded-xl flex items-center justify-center">
                                                 <i class="fa-solid fa-trash"></i>
                                             </button>
                                         </form>
@@ -117,6 +136,13 @@
                 </table>
             </div>
         </div>
+
+        {{-- CARD PAGINATION --}}
+        @if($admins->hasPages())
+            <div class="mt-4 bg-white rounded-2xl shadow-lg border px-4 md:px-6 py-4">
+                {{ $admins->links() }}
+            </div>
+        @endif
     </div>
 
     <div id="createAdminModal" class="fixed inset-0 hidden items-center justify-center bg-black/50 z-[99999] opacity-0 transition-all duration-200">
@@ -210,6 +236,6 @@
         </div>
     </div>
 
-    @vite('resources/js/modules/adminManagement.js')
+    @vite('resources/js/modules/super-admin/superAdminUsers.js')
 
 </x-app-layout>

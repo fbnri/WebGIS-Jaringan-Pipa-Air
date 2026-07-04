@@ -1,3 +1,5 @@
+import { isDrawing } from "./drawState";
+
 window.selectedYear = window.currentYear;
 
 let pipeLayers = {};
@@ -53,6 +55,10 @@ window.renderPipes = function(){
         });
 
         layer.on("click",() => {
+            if (isDrawing()) {
+                return;
+            }
+
             document.getElementById("edit_id").value = pipe.id;
             document.getElementById("edit_name").value = pipe.name;
             document.getElementById("edit_type").value = pipe.pipe_type;

@@ -1,10 +1,19 @@
 document.getElementById("saveEdit").onclick = ()=>{
     const saveBtn = document.getElementById("saveEdit");
 
+    saveBtn.classList.add(
+        "opacity-70",
+        "cursor-not-allowed"
+    );
+
     if(saveBtn.disabled) return;
 
     saveBtn.disabled = true;
-    saveBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i>`;
+
+    saveBtn.innerHTML = `
+        <i class="fa-solid fa-spinner fa-spin"></i>
+        <span>Menyimpan...</span>
+    `;
 
     let id = document.getElementById("edit_id").value;
 
@@ -63,9 +72,6 @@ document.getElementById("saveEdit").onclick = ()=>{
     })
 
     .then(() => {
-        saveBtn.disabled = false;
-        saveBtn.innerHTML = "Simpan";
-
         showToast(
             "Berhasil update data!",
             "success"
@@ -78,6 +84,12 @@ document.getElementById("saveEdit").onclick = ()=>{
 
     .catch((err) => {
         saveBtn.disabled = false;
+
+        saveBtn.classList.remove(
+            "opacity-70",
+            "cursor-not-allowed"
+        );
+
         saveBtn.innerHTML = "Simpan";
 
         showToast(
@@ -86,7 +98,16 @@ document.getElementById("saveEdit").onclick = ()=>{
         );
     });
 
-    document.getElementById("cancelBtn").onclick = ()=>{
+    document.getElementById("cancelEdit").onclick = ()=>{
+        saveBtn.disabled=false;
+
+        saveBtn.classList.remove(
+            "opacity-70",
+            "cursor-not-allowed"
+        );
+
+        saveBtn.innerHTML="Simpan";
+
         closeModalById("editModal");
     };
 }

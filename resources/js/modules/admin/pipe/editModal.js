@@ -42,6 +42,15 @@ function initEditModal(){
 
     // CLOSE MODAL
     cancelBtn.onclick = () => {
+        saveBtn.disabled = false;
+
+        saveBtn.classList.remove(
+            "opacity-70",
+            "cursor-not-allowed"
+        );
+
+        saveBtn.innerHTML = "Simpan";
+
         const content = editModal.querySelector(".modal-content");
 
         content.classList.remove(
@@ -64,6 +73,25 @@ function initEditModal(){
 
     // SAVE EDIT
     saveBtn.onclick = async () => {
+        // Cegah double click
+        if (saveBtn.disabled) {
+            return;
+        }
+
+        saveBtn.disabled = true;
+
+        saveBtn.classList.add(
+            "opacity-70",
+            "cursor-not-allowed"
+        );
+
+        const originalText = saveBtn.innerHTML;
+
+        saveBtn.innerHTML = `
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            <span>Menyimpan...</span>
+        `;
+
         let id = document.getElementById("edit_id").value;
 
         try {
@@ -102,7 +130,7 @@ function initEditModal(){
             }
 
             showToast(
-                "Berhasil update data!",
+                "Berhasil perbarui data",
                 "success"
             );
 
@@ -114,6 +142,15 @@ function initEditModal(){
                 err.message,
                 "error"
             );
+
+            saveBtn.disabled = false;
+
+            saveBtn.classList.remove(
+                "opacity-70",
+                "cursor-not-allowed"
+            );
+
+            saveBtn.innerHTML = originalText;
         }
     };
 }

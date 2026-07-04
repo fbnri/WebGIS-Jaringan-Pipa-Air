@@ -1,10 +1,41 @@
 document.getElementById("saveCreate").onclick = ()=>{
+    const saveBtn = document.getElementById("saveCreate");
+
+    const resetButton = () => {
+        saveBtn.disabled = false;
+
+        saveBtn.classList.remove(
+            "opacity-70",
+            "cursor-not-allowed"
+        );
+
+        saveBtn.innerHTML = "Simpan";
+    };
+
+    if(saveBtn.disabled){
+        return;
+    }
+
+    saveBtn.disabled = true;
+
+    saveBtn.classList.add(
+        "opacity-70",
+        "cursor-not-allowed"
+    );
+
+    saveBtn.innerHTML = `
+        <i class="fa-solid fa-spinner fa-spin"></i>
+        <span>Menyimpan...</span>
+    `;
+
     const name = document.getElementById("create_name").value.trim();
     const type = document.getElementById("create_type").value.trim();
     const planned = document.getElementById("planned_at").value;
     const installed = document.getElementById("installed_at").value;
 
     if(!name){
+        resetButton();
+
         showToast(
             "Nama pipa harus diisi terlebih dahulu!",
             "error"
@@ -14,6 +45,8 @@ document.getElementById("saveCreate").onclick = ()=>{
     }
 
     if(!type){
+        resetButton();
+
         showToast(
             "Jenis pipa harus diisi terlebih dahulu!",
             "error"
@@ -23,6 +56,8 @@ document.getElementById("saveCreate").onclick = ()=>{
     }
 
     if(!planned){
+        resetButton();
+
         showToast(
             "Tanggal rencana wajib diisi!",
             "error"
@@ -32,6 +67,8 @@ document.getElementById("saveCreate").onclick = ()=>{
     }
 
     if(installed && installed < planned){
+        resetButton();
+
         showToast(
             "Tanggal terpasang tidak boleh sebelum tanggal rencana!",
             "error"
@@ -83,9 +120,11 @@ document.getElementById("saveCreate").onclick = ()=>{
     })
 
     .catch(() => {
+        resetButton();
+
         showToast(
             "Gagal tambah data!",
             "error"
-        );
+        );  
     });
 };

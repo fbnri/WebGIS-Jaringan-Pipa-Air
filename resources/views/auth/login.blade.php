@@ -1,4 +1,10 @@
 <x-guest-layout>
+    <div
+        id="loginPageData"
+        data-error="{{ $errors->first('email') ?? $errors->first() }}"
+        hidden>
+    </div>
+
     <div class="min-h-screen flex items-center justify-center bg-gray-100 px-4">
         <div class="w-full max-w-md bg-white rounded-2xl shadow-xl border p-8">
 
@@ -13,22 +19,8 @@
                 </p>
             </div>
 
-            {{-- ALERT ERROR LOGIN --}}
-            @if ($errors->any())
-                <div id="toastError"
-                    class="fixed top-5 right-5 z-[9999] flex items-center gap-3
-                    px-4 py-3 rounded-xl shadow-lg text-white text-sm
-                    bg-red-600 transform translate-x-full opacity-0
-                    transition-all duration-300">
-                    <i class="fa-solid fa-circle-xmark text-lg"></i>
-                    <span>
-                        {{ $errors->first('email') ?? $errors->first() }}
-                    </span>
-                </div>
-            @endif
-
             {{-- STATUS --}}
-            <form method="POST" action="{{ route('login') }}" class="space-y-4">
+            <form id="loginForm" method="POST" action="{{ route('login') }}" class="space-y-4">
                 @csrf
 
                 {{-- EMAIL --}}
@@ -42,6 +34,7 @@
                             id="email"
                             type="email"
                             name="email"
+                            autocomplete="username"
                             value="{{ old('email') }}"
                             required autofocus
                             class="pl-10 mt-1 block w-full rounded-xl border-gray-300 focus:ring-2 
@@ -63,6 +56,7 @@
                             id="password"
                             type="password"
                             name="password"
+                            autocomplete="current-password"
                             required
                             auto-capitalize="off"
                             spellcheck="false"
@@ -91,35 +85,4 @@
             </form>
         </div>
     </div>
-
-    <script>
-        // ALERT TOAST ERROR
-        window.addEventListener('DOMContentLoaded', () => {
-            const toast = document.getElementById('toastError');
-
-            if (toast) {
-                setTimeout(() => {
-                    toast.classList.remove('translate-x-full','opacity-0');
-                }, 50);
-
-                setTimeout(() => {
-                    toast.classList.add('translate-x-full','opacity-0');
-                }, 3000);
-            }
-        });
-
-        // TOGGLE PASSWORD
-        document.getElementById('togglePassword').addEventListener('click', function () {
-            const input = document.getElementById('password');
-            const icon = document.getElementById('eyeIcon');
-
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.classList.replace('fa-eye', 'fa-eye-slash');
-            } else {
-                input.type = 'password';
-                icon.classList.replace('fa-eye-slash', 'fa-eye');
-            }
-        });
-    </script>
 </x-guest-layout>

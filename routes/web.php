@@ -3,6 +3,7 @@
 use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\PipeController;
+use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuperAdmin\UserManagementController;
 use App\Http\Controllers\ForcePasswordController;
@@ -31,6 +32,7 @@ Route::middleware([
 ->group(function () {
     Route::get('/dashboard', [PipeController::class, 'adminMap'])->name('dashboard');
     Route::resource('/pipes', PipeController::class);
+    Route::resource('/customers', CustomerController::class);
 });
 
 // SUPER ADMIN ONLY

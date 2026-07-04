@@ -16,8 +16,7 @@ document.addEventListener('alpine:init', () => {
 
                 // DESKTOP
                 else {
-                    this.sidebarCollapsed =
-                        localStorage.getItem('sidebarCollapsed') === 'true';
+                    this.sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
                 }
             });
         },
@@ -43,3 +42,42 @@ document.addEventListener('alpine:init', () => {
         }
     }));
 });
+
+// LOGOUT BUTTON
+document.addEventListener("DOMContentLoaded", () => {
+        const logoutForm = document.getElementById("logoutForm");
+        const logoutBtn = document.getElementById("logoutBtn");
+        const logoutBtnText = document.getElementById("logoutBtnText");
+
+        if(
+            !logoutForm ||
+            !logoutBtn ||
+            !logoutBtnText
+        ){
+            return;
+        }
+
+        logoutForm.addEventListener("submit", () => {
+                logoutBtn.disabled = true;
+
+                logoutBtn.classList.remove(
+                    "bg-red-600",
+                    "hover:bg-red-700"
+                );
+
+                logoutBtn.classList.add(
+                    "bg-gray-500",
+                    "cursor-not-allowed"
+                );
+
+                logoutBtnText.textContent = "Keluar...";
+
+                const icon = logoutBtn.querySelector("i");
+
+                if(icon){
+                    icon.className ="fa-solid fa-spinner fa-spin";
+                }
+            }
+        );
+    }
+);

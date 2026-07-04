@@ -184,12 +184,20 @@
                 </p>
                 <div class="space-y-2">
                     <div class="flex items-center gap-2">
-                        <div class="w-6 h-1 bg-blue-600 rounded"></div>
+                        <div class="w-6 h-1 bg-blue-600 rounded flex-shrink-0"></div>
                         <span>Terpasang</span>
                     </div>
+
                     <div class="flex items-center gap-2">
-                        <div class="w-6 h-1 bg-cyan-300 rounded"></div>
+                        <div class="w-6 h-1 bg-cyan-300 rounded flex-shrink-0"></div>
                         <span>Perencanaan</span>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <div class="w-6 flex justify-center flex-shrink-0">
+                            <i class="fa-solid fa-location-dot text-red-500"></i>
+                        </div>
+                        <span>Pelanggan</span>
                     </div>
                 </div>
             </div>
@@ -308,143 +316,15 @@
 
     @push('styles')
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-    <style>
-        #filterPanel, #layerPanel {
-            transform-origin: top;
-            transition: all 0.2s ease;
-        }
-        #editModal {
-            z-index: 99999 !important;
-        }
-        #layerIcon{
-            transition: transform 0.2s ease;
-        }
-        #map{
-            touch-action: pan-x pan-y;
-        }
-        #filterPanel, #filterPanelMobile {
-            pointer-events: none;
-            z-index: 9999;
-        }
-        #filterPanel.panel-open, 
-        #filterPanelMobile.panel-open {
-            pointer-events: auto;
-        }
-        .leaflet-container {
-            z-index: 1 !important;
-        }
-        .leaflet-control-zoom{
-            border:none;
-            box-shadow:0 4px 10px rgba(0,0,0,0.15);
-            border-radius:10px;
-            overflow:hidden;
-        }
-        .leaflet-control-attribution{
-            font-size:10px;
-            opacity:0.7;
-        }
-        .leaflet-control-zoom a{
-            background:white;
-            color:#333;
-            border:none;
-        }
-        .leaflet-control-zoom a:hover{
-            background:#f3f4f6;
-        }
-        button {
-            -webkit-tap-highlight-color: transparent;
-        }
-        button:focus {
-            outline: none;
-        }
-
-        /* ANIMASI MODAL ALA IPHONE */
-        .modal-enter {
-            opacity: 0;
-            transform: scale(0.9) translateY(20px);
-        }
-        .modal-enter-active {
-            opacity: 1;
-            transform: scale(1.03) translateY(0);
-            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        .modal-exit {
-            opacity: 1;
-            transform: scale(1);
-        }
-        .modal-exit-active {
-            opacity: 0;
-            transform: scale(0.9) translateY(10px);
-            transition: all 0.2s ease;
-        }
-        .modal-iphone {
-            animation: iphonePop 0.5s cubic-bezier(.34,1.56,.64,1);
-        }
-
-        @keyframes iphonePop {
-            0% {
-                transform: scale(0.8);
-                opacity: 0;
-            }
-            60% {
-                transform: scale(1.05);
-                opacity: 1;
-            }
-            80% {
-                transform: scale(0.97);
-            }
-            100% {
-                transform: scale(1);
-            }
-        }
-
-        @keyframes slideUp {
-            from {
-                transform: translateY(100%);
-            }
-            to {
-                transform: translateY(0);
-            }
-        }
-
-        .animate-slideUp {
-            animation: slideUp 0.25s ease;
-        }
-
-        /* SCROLLBAR */
-        #yearPanel ::-webkit-scrollbar,
-        #mobileYearList::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        #yearPanel ::-webkit-scrollbar-thumb,
-        #mobileYearList::-webkit-scrollbar-thumb {
-            background: rgba(0,0,0,0.2);
-            border-radius: 999px;
-        }
-        .leaflet-container {
-            z-index: 0 !important;
-        }
-        .leaflet-pane {
-            z-index: auto !important;
-        }
-        .card-hover:hover{
-            transform: translateY(-3px);
-        }
-        .draw-hide {
-            transition:
-            opacity 0.2s ease,
-            transform 0.2s ease;
-        }
-    </style>
     @endpush
 
     <script>
         window.pipesData = @json($pipes);
+        window.customersData = @json($customers);
         window.currentYear = @json($year ?? $maxYear);
         window.minYear = @json($minYear);
         window.maxYear = @json($maxYear);
     </script>
 
-    @vite('resources/js/modules/dashboard.js')
+    @vite('resources/js/modules/admin/adminDashboard.js')
 </x-app-layout>

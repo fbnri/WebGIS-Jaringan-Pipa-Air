@@ -1,17 +1,21 @@
-import {
-    reNumberTable
-} from './tableHelper';
+import { reNumberTable } from './tableHelper';
 
 function initDeleteModal(){
     const deleteModal = document.getElementById("deleteModal");
     const cancelBtn = document.getElementById("cancelDelete");
     const confirmBtn = document.getElementById("confirmDelete");
 
-    if(!deleteModal || !cancelBtn || !confirmBtn){
+    if(
+        !deleteModal || 
+        !cancelBtn || 
+        !confirmBtn || 
+        !document.querySelector('.btnDelete')
+    ){
         return;
     }
 
     let deleteId = null;
+    let isDeleting = false;
 
     // OPEN
     document.querySelectorAll('.btnDelete').forEach(btn => {
@@ -43,6 +47,17 @@ function initDeleteModal(){
 
     // CLOSE
     cancelBtn.onclick = () => {
+        if (isDeleting) return;
+
+        confirmBtn.disabled = false;
+
+        confirmBtn.classList.remove(
+            "opacity-70",
+            "cursor-not-allowed"
+        );
+
+        confirmBtn.innerHTML = "Hapus";
+
         const content = deleteModal.querySelector(".modal-content");
 
         content.classList.remove(
@@ -64,7 +79,31 @@ function initDeleteModal(){
     };
 
     // CONFIRM DELETE
-    confirmBtn.onclick = () => {
+    confirmBtn.onclick = async (e) => {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        if (isDeleting) {
+            return;
+        }
+
+        confirmBtn.onclick = null;
+
+        isDeleting = true;
+        confirmBtn.disabled = true;
+
+        confirmBtn.classList.add(
+            "opacity-70",
+            "cursor-not-allowed"
+        );
+
+        const originalText = confirmBtn.innerHTML;
+
+        confirmBtn.innerHTML = `
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            <span>Menghapus...</span>
+        `;
+
         fetch(`/admin/pipes/${deleteId}`, {
             method: "DELETE",
 
@@ -91,13 +130,24 @@ function initDeleteModal(){
                 .closest("tr");
 
             row.remove();
-
             reNumberTable();
+
+            isDeleting = false;
 
             cancelBtn.click();
         })
 
         .catch(() => {
+            isDeleting = false;
+            confirmBtn.disabled = false;
+
+            confirmBtn.classList.remove(
+                "opacity-70",
+                "cursor-not-allowed"
+            );
+
+            confirmBtn.innerHTML = originalText;
+
             showToast(
                 "Gagal hapus data!",
                 "error"

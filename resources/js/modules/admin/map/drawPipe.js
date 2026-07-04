@@ -1,4 +1,6 @@
-import { smoothLine } from "../utils/smoothLine";
+import { smoothLine } from "../../shared/utils/smoothLine";
+import { snapToNode } from "./snap";
+import { setDrawingState } from "./drawState";
 
 let drawing = false;
 let modalOpened = false;
@@ -31,6 +33,7 @@ function toggleDrawUI(hide = false){
 
 function enableDrawMode(){
     drawing = true;
+    setDrawingState(true);
     points = [];
     window.tempGeometry = null;
 
@@ -45,6 +48,7 @@ function enableDrawMode(){
 function disableDrawMode(){
     modalOpened = false;
     drawing = false;
+    setDrawingState(false);
 
     mapEl.style.cursor = "";
 
@@ -148,18 +152,23 @@ map.on("mouseup", (e) => {
         return;
     }
 
-    points.push(e.latlng);
+    const point = snapToNode(e.latlng);
+
+    points.push(point);
 
     redrawLine();
 });
 
 map.on("mousemove",(e)=>{
     if(!drawing) return;
+
+    const snappedPoint = snapToNode(e.latlng);
+
     if(points.length === 0) return;
 
     const previewPoints = [
         points[points.length - 1],
-        e.latlng
+        snappedPoint
     ];
 
     if(previewLine){

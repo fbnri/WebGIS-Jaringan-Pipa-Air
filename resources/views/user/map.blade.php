@@ -1,5 +1,4 @@
 @extends('layouts.user-panel')
-
     @section('content')
     @php
         $pipes = $pipes ?? [];
@@ -7,36 +6,6 @@
 
     @push('styles')
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-    <style>
-        #filterPanel, #layerPanel {
-            transform-origin: top;
-        }
-        #yearIcon {
-            transition: transform 0.2s ease;
-        }
-        #mobileMenu {
-            transition: all 0.3s ease;
-        }
-        .card-hover:hover {
-            transform: translateY(-3px);
-        }
-        .custom-select {
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg fill='none' stroke='%23333' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 10px center;
-            background-size: 16px;
-        }
-        .leaflet-popup-content-wrapper {
-            border-radius: 12px;
-        }
-        .leaflet-control-zoom {
-            border: none;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-    </style>
     @endpush
 
     <div class="p-4 md:p-6 space-y-6">
@@ -166,13 +135,13 @@
 
     <script>
         window.pipesData = @json($pipes);
+        window.customersData = @json($customers);
         window.currentYear = @json($year ?? $maxYear);
         window.minYear = @json($minYear);
         window.maxYear = @json($maxYear);
     </script>
 
     @push('scripts')
-        @vite('resources/js/modules/user.js')
+        @vite('resources/js/modules/user/userMap.js')
     @endpush
-
 @endsection

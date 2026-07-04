@@ -129,12 +129,15 @@
                 @endif
             </nav>
             <div class="mt-auto p-4">
-                <form method="POST" action="{{ route('logout') }}">
+                <form id="logoutForm" method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button
+                    id="logoutBtn"
+                    type="submit"
                     class="w-full flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg">
                         <i class="fa-solid fa-right-from-bracket"></i>
                         <span
+                        id="logoutBtnText"
                         :class="sidebarCollapsed
                         ? 'md:hidden inline-block'
                         : 'inline-block'">
@@ -149,7 +152,7 @@
     {{-- CONTENT WRAPPER --}}
     <div
     :class="sidebarCollapsed ? 'md:ml-20' : 'md:ml-64'"
-    class="flex-1 min-h-[100dvh] bg-gray-100 transition-all duration-300 w-full overflow-x-hidden">
+    class="flex-1 min-h-screen bg-gray-100 transition-all duration-300 w-full overflow-x-hidden">
 
         {{-- TOP NAV --}}
         <header class="bg-white shadow h-16 flex items-center px-6">

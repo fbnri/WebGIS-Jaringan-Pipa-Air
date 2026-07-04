@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pipe;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -28,7 +29,8 @@ class PipeController extends Controller
             })
 
             ->latest()
-            ->get();
+            ->paginate(10)
+            ->withQueryString();
 
         // LIST JENIS
         $pipeTypes = Pipe::select('pipe_type')
@@ -69,6 +71,8 @@ class PipeController extends Controller
             $query->whereYear('planned_at', '<=', $year);
         })->get();
 
+        $customers = Customer::all();
+
         $minPlanned = Pipe::min(DB::raw('YEAR(planned_at)'));
         $minInstalled = Pipe::min(DB::raw('YEAR(installed_at)'));
 
@@ -96,6 +100,7 @@ class PipeController extends Controller
 
         return view('user.map', compact(
             'pipes',
+            'customers',
             'year',
             'totalPipa',
             'totalTerpasang',
@@ -124,7 +129,8 @@ class PipeController extends Controller
             })
 
             ->latest()
-            ->get();
+            ->paginate(10)
+            ->withQueryString();
 
         // LIST JENIS
         $pipeTypes = Pipe::select('pipe_type')
@@ -171,6 +177,8 @@ class PipeController extends Controller
             $query->whereYear('planned_at', '<=', $year);
         })->get();
 
+        $customers = Customer::all();
+
         $minPlanned = Pipe::min(DB::raw('YEAR(planned_at)'));
         $minInstalled = Pipe::min(DB::raw('YEAR(installed_at)'));
 
@@ -198,6 +206,7 @@ class PipeController extends Controller
 
         return view('admin.dashboard', compact(
             'pipes',
+            'customers',
             'total',
             'totalTerpasang',
             'totalRencana',

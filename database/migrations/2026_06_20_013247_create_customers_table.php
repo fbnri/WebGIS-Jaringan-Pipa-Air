@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pipes', function (Blueprint $table) {
+        Schema::create('customers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('pipe_type');
-            $table->double('length')->nullable();
-            $table->date('planned_at')->nullable();
-            $table->date('installed_at')->nullable();
-            $table->longText('geometry');
+            $table->text('address')->nullable();
+            $table->decimal('latitude', 10, 7);
+            $table->decimal('longitude', 10, 7);
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pipes');
+        Schema::dropIfExists('customers');
     }
 };
