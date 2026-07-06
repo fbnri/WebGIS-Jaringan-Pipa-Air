@@ -173,6 +173,15 @@
                         <input type="radio" name="basemap" value="sat">
                         Satelit
                     </label>
+                    <div class="my-2 border-t border-gray-300"></div>
+                    <label class="flex items-center gap-2 text-sm">
+                        <input
+                            type="checkbox"
+                            id="toggleBoundary"
+                            checked
+                        >
+                        Batas Wilayah
+                    </label>
                 </div>
             </div>
 
@@ -228,14 +237,21 @@
                 </div>
                 <div>
                     <label class="text-sm">Panjang (m)</label>
-                    <input type="number" id="edit_length" class="w-full border rounded-lg p-2" readonly>
+                    <input type="number" id="edit_length" min="0" step="0.01" class="w-full border rounded-lg p-2">
                 </div>
             </div>
             <div class="flex justify-between mt-6">
-                <button id="deletePipe"
-                    class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
-                    Hapus
-                </button>
+                <div class="flex gap-2">
+                    <button id="extendPipe"
+                        class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+                        <i class="fa-solid fa-plus"></i>
+                        Perpanjang
+                    </button>
+                    <button id="deletePipe"
+                        class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
+                        Hapus
+                    </button>
+                </div>
                 <div class="space-x-2">
                     <button id="cancelBtn"
                         class="px-4 py-2 border rounded-lg">
@@ -296,9 +312,7 @@
                 </div>
                 <div>
                     <label class="text-sm">Panjang (m)</label>
-                    <input type="number" id="create_length"
-                    readonly
-                    class="w-full border rounded-lg p-2 bg-gray-100">
+                    <input type="number" id="create_length" min="0" step="0.01" placeholder="Masukkan Panjang Pipa" class="w-full border rounded-lg p-2 bg-gray-100">
                 </div>
             </div>
             <div class="flex justify-end mt-6 space-x-2">

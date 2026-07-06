@@ -223,15 +223,24 @@ class PipeController extends Controller
             'name' => 'required|string',
             'pipe_type' => 'required|string',
             'planned_at' => 'required|date',
-            'installed_at' => 'nullable|date',
-            'length' => 'required|numeric',
+            'installed_at' => 'nullable|date|after_or_equal:planned_at',
+            'length' => 'required|numeric|min:0',
             'geometry' => 'required'
+        ],[
+            'name.required' => 'Nama pipa wajib diisi',
+            'pipe_type.required' => 'Jenis pipa wajib diisi',
+            'planned_at.required' => 'Tanggal rencana wajib diisi',
+            'installed_at.after_or_equal' => 'Tanggal terpasang tidak boleh sebelum tanggal rencana',
+            'length.required' => 'Panjang pipa wajib diisi',
+            'length.numeric' => 'Panjang pipa harus berupa angka',
+            'length.min' => 'Panjang pipa tidak boleh kurang dari 0',
+            'geometry.required' => 'Geometry pipa belum tersedia'
         ]);
 
         $pipe = Pipe::create([
             'name' => $validated['name'],
             'pipe_type' => $validated['pipe_type'],
-            'planned_at' => $validated['planned_at'], // WAJIB MASUK
+            'planned_at' => $validated['planned_at'],
             'installed_at' => $validated['installed_at'] ?? null,
             'length' => $validated['length'],
             'geometry' => json_encode($validated['geometry'])
@@ -257,9 +266,15 @@ class PipeController extends Controller
             'pipe_type' => 'required|string',
             'planned_at' => 'required|date',
             'installed_at' => 'nullable|date|after_or_equal:planned_at',
-            'length' => 'required|numeric'
+            'length' => 'required|numeric|min:0'
         ],[
-            'installed_at.after_or_equal' => 'Tanggal terpasang tidak boleh sebelum tanggal rencana!'
+            'name.required' => 'Nama pipa wajib diisi',
+            'pipe_type.required' => 'Jenis pipa wajib diisi',
+            'planned_at.required' => 'Tanggal rencana wajib diisi',
+            'installed_at.after_or_equal' => 'Tanggal terpasang tidak boleh sebelum tanggal rencana',
+            'length.required' => 'Panjang pipa wajib diisi',
+            'length.numeric' => 'Panjang pipa harus berupa angka',
+            'length.min' => 'Panjang pipa tidak boleh kurang dari 0'
         ]);
 
         $pipe->name = $validated['name'];

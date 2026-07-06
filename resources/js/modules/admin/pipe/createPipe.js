@@ -32,12 +32,13 @@ document.getElementById("saveCreate").onclick = ()=>{
     const type = document.getElementById("create_type").value.trim();
     const planned = document.getElementById("planned_at").value;
     const installed = document.getElementById("installed_at").value;
+    const length = document.getElementById("create_length").value.trim();
 
     if(!name){
         resetButton();
 
         showToast(
-            "Nama pipa harus diisi terlebih dahulu!",
+            "Nama pipa harus diisi",
             "error"
         );
 
@@ -48,7 +49,7 @@ document.getElementById("saveCreate").onclick = ()=>{
         resetButton();
 
         showToast(
-            "Jenis pipa harus diisi terlebih dahulu!",
+            "Jenis pipa harus diisi",
             "error"
         );
 
@@ -59,7 +60,29 @@ document.getElementById("saveCreate").onclick = ()=>{
         resetButton();
 
         showToast(
-            "Tanggal rencana wajib diisi!",
+            "Tanggal rencana wajib diisi",
+            "error"
+        );
+
+        return;
+    }
+
+    if(length === ""){
+        resetButton();
+
+        showToast(
+            "Panjang pipa wajib diisi",
+            "error"
+        );
+
+        return;
+    }
+
+    if(Number(length) < 0){
+        resetButton();
+
+        showToast(
+            "Panjang pipa tidak boleh kurang dari 0",
             "error"
         );
 
@@ -70,7 +93,7 @@ document.getElementById("saveCreate").onclick = ()=>{
         resetButton();
 
         showToast(
-            "Tanggal terpasang tidak boleh sebelum tanggal rencana!",
+            "Tanggal terpasang tidak boleh sebelum tanggal rencana",
             "error"
         );
 
@@ -94,23 +117,32 @@ document.getElementById("saveCreate").onclick = ()=>{
             pipe_type: type,
             planned_at: planned,
             installed_at: installed || null,
-            length:
-                document.getElementById("create_length")
-                .value,
+            length: Number(length),
             geometry: window.tempGeometry
         })
     })
 
-    .then(res => {
-        if (!res.ok)
-            throw new Error("Gagal simpan data");
+    .then(async res => {
+        const data = await res.json();
 
-        return res.json();
+        if(!res.ok){
+            let errorMessage = data.message || "Gagal tambah data";
+
+            if(data.errors){
+                const firstError = Object.values(data.errors)[0];
+
+                if(firstError){
+                    errorMessage = firstError[0];
+                }
+            }
+            throw new Error(errorMessage);
+        }
+        return data;
     })
 
     .then(() => {
         showToast(
-            "Berhasil tambah data!",
+            "Berhasil tambah data",
             "success"
         );
 
@@ -119,12 +151,12 @@ document.getElementById("saveCreate").onclick = ()=>{
         }, 800);
     })
 
-    .catch(() => {
+    .catch((err)=>{
         resetButton();
 
         showToast(
-            "Gagal tambah data!",
+            err.message,
             "error"
-        );  
+        );
     });
 };

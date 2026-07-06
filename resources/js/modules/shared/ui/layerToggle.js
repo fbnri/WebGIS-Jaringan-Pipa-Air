@@ -30,3 +30,31 @@ if(layerBtn && layerPanelEl){
         }
     });
 }
+
+const boundaryToggle = document.getElementById("toggleBoundary");
+
+if(boundaryToggle){
+    const savedBoundary = localStorage.getItem("boundaryVisible");
+
+    if(savedBoundary === "false"){
+        boundaryToggle.checked = false;
+    }
+
+    boundaryToggle.addEventListener("change",()=>{
+        localStorage.setItem(
+            "boundaryVisible",
+            boundaryToggle.checked
+        );
+
+        if(!window.bandungBoundary){
+            return;
+        }
+
+        if(boundaryToggle.checked){
+            window.bandungBoundary.addTo(map);
+            window.bandungBoundary.bringToBack();
+        }else{
+            map.removeLayer(window.bandungBoundary);
+        }
+    });
+}

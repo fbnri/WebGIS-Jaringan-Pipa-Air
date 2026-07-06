@@ -1,4 +1,7 @@
-import { isDrawing } from "./drawState";
+import { 
+    isDrawing,
+    getDrawMode
+} from "./drawState";
 
 window.selectedYear = window.currentYear;
 
@@ -55,9 +58,16 @@ window.renderPipes = function(){
         });
 
         layer.on("click",() => {
-            if (isDrawing()) {
+            window.currentPipe = pipe;
+
+            if (
+                isDrawing() ||
+                getDrawMode() === "extend"
+            ){
                 return;
             }
+
+            window.currentPipe = pipe;
 
             document.getElementById("edit_id").value = pipe.id;
             document.getElementById("edit_name").value = pipe.name;
@@ -65,8 +75,25 @@ window.renderPipes = function(){
             document.getElementById("edit_planned_at").value = pipe.planned_at ?? '';
             document.getElementById("edit_installed_at").value = pipe.installed_at ?? '';
             document.getElementById("edit_length").value = pipe.length;
+            document.getElementById("extendPipe").onclick = () => {
+                closeModalById("editModal");
+
+                setTimeout(()=>{
+                    startExtendPipe(pipe);
+                },200);
+            };
 
             openModalById("editModal");
+
+            const extendBtn = document.getElementById("extendPipe");
+
+            extendBtn.onclick = () => {
+                closeModalById("editModal");
+
+                setTimeout(() => {
+                    window.startExtendPipe(pipe);
+                },200);
+            };
         });
     });
 }

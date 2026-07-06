@@ -16,6 +16,25 @@ document.getElementById("saveEdit").onclick = ()=>{
     `;
 
     let id = document.getElementById("edit_id").value;
+    const length = document.getElementById("edit_length").value.trim();
+
+    if(!length){
+        saveBtn.disabled = false;
+
+        saveBtn.classList.remove(
+            "opacity-70",
+            "cursor-not-allowed"
+        );
+
+        saveBtn.innerHTML = "Simpan";
+
+        showToast(
+            "Panjang pipa wajib diisi",
+            "error"
+        );
+
+        return;
+    }
 
     fetch(`/admin/pipes/${id}`,{
         method:"PUT",
@@ -25,31 +44,17 @@ document.getElementById("saveEdit").onclick = ()=>{
             "Accept":"application/json",
 
             "X-CSRF-TOKEN":
-                document.querySelector(
-                    'meta[name="csrf-token"]'
-                ).getAttribute("content")
+            document.querySelector(
+                'meta[name="csrf-token"]'
+            ).getAttribute("content")
         },
 
         body:JSON.stringify({
-            name:
-                document.getElementById("edit_name")
-                .value,
-
-            pipe_type:
-                document.getElementById("edit_type")
-                .value,
-
-            planned_at:
-                document.getElementById("edit_planned_at")
-                .value,
-
-            installed_at:
-                document.getElementById("edit_installed_at")
-                .value,
-
-            length:
-                document.getElementById("edit_length")
-                .value
+            name: document.getElementById("edit_name").value,
+            pipe_type: document.getElementById("edit_type").value,
+            planned_at: document.getElementById("edit_planned_at").value,
+            installed_at: document.getElementById("edit_installed_at").value,
+            length: length
         })
     })
 
@@ -57,7 +62,7 @@ document.getElementById("saveEdit").onclick = ()=>{
         const data = await res.json();
 
         if(!res.ok){
-            let errorMessage = data.message || "Gagal update data!";
+            let errorMessage = data.message || "Gagal update data";
 
             if(data.errors){
                 const firstError = Object.values(data.errors)[0];
@@ -73,7 +78,7 @@ document.getElementById("saveEdit").onclick = ()=>{
 
     .then(() => {
         showToast(
-            "Berhasil update data!",
+            "Berhasil update data",
             "success"
         );
 
@@ -115,19 +120,15 @@ document.getElementById("saveEdit").onclick = ()=>{
 document.addEventListener("keydown",(e)=>{
     if(e.key !== "Enter") return;
 
-    const editModal =
-        document.getElementById("editModal");
+    const editModal = document.getElementById("editModal");
 
     if(
         editModal &&
         !editModal.classList.contains("hidden")
     ){
-
         e.preventDefault();
 
-        document
-            .getElementById("saveEdit")
-            .click();
+        document.getElementById("saveEdit").click();
     }
 });
 
@@ -140,7 +141,6 @@ document.addEventListener("keydown",(e)=>{
         editModal &&
         !editModal.classList.contains("hidden")
     ){
-
         e.preventDefault();
 
         closeModalById("editModal");

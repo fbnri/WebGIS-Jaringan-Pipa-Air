@@ -3,6 +3,7 @@ export default function loadBandungBoundary() {
         .then(response => response.json())
         .then(data => {
             const boundaryLayer = L.geoJSON(data, {
+                interactive: false,
                 style: {
                     color: '#64748b',
                     weight: 1.5,
@@ -11,8 +12,12 @@ export default function loadBandungBoundary() {
                 }
             });
 
-            boundaryLayer.addTo(window.map);
-            boundaryLayer.bringToBack();
+            const visible = localStorage.getItem("boundaryVisible") !== "false";
+
+            if(visible){
+                boundaryLayer.addTo(window.map);
+                boundaryLayer.bringToBack();
+            }
 
             window.bandungBoundary = boundaryLayer;
 
