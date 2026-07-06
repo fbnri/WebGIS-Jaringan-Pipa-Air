@@ -12,6 +12,7 @@ import { setDrawingState,
 let drawing = false;
 let modalOpened = false;
 let justOpenedModal = false;
+let savingExtend = false;
 let points = []; let originalGeometry = [];
 let tempLine = null;
 let previewLine = null;
@@ -65,9 +66,22 @@ function enableDrawMode(){
 function disableDrawMode(){
     modalOpened = false;
     drawing = false;
+    savingExtend = false;
+
     setDrawingState(false);
 
     mapEl.style.cursor = "";
+
+    const finishBtn = document.getElementById("btnFinish");
+
+    finishBtn.disabled = false;
+
+    finishBtn.classList.remove(
+        "opacity-70",
+        "cursor-not-allowed"
+    );
+
+    finishBtn.innerHTML = `<i class="fa-solid fa-check"></i>`;
 
     drawToolbar.classList.add("hidden");
     drawInfo.classList.add("hidden");
@@ -220,6 +234,23 @@ window.startExtendPipe = function(pipe){
 }
 
 function updateExtendedPipe(){
+    if(savingExtend){
+        return;
+    }
+
+    savingExtend = true;
+
+    const finishBtn = document.getElementById("btnFinish");
+
+    finishBtn.disabled = true;
+
+    finishBtn.classList.add(
+        "opacity-70",
+        "cursor-not-allowed"
+    );
+
+    finishBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i>`;
+
     const id = getExtendPipeId();
 
     fetch(`/admin/pipes/${id}`,{
@@ -259,6 +290,9 @@ function updateExtendedPipe(){
     })
 
     .then(()=>{
+        drawToolbar.classList.add("hidden");
+        drawInfo.classList.add("hidden");
+
         showToast(
             "Jalur pipa berhasil diperpanjang",
             "success"
@@ -270,6 +304,16 @@ function updateExtendedPipe(){
     })
 
     .catch(err=>{
+        savingExtend = false;
+        finishBtn.disabled = false;
+
+        finishBtn.classList.remove(
+            "opacity-70",
+            "cursor-not-allowed"
+        );
+
+        finishBtn.innerHTML = `<i class="fa-solid fa-check"></i>`;
+
         showToast(
             err.message,
             "error"
@@ -418,9 +462,6 @@ document.getElementById("btnFinish").onclick = ()=>{
         }
     }
 
-    drawToolbar.classList.add("hidden");
-    drawInfo.classList.add("hidden");
-
     if(getDrawMode() === "extend"){
         updateExtendedPipe();
 
@@ -429,6 +470,9 @@ document.getElementById("btnFinish").onclick = ()=>{
 
     modalOpened = true;
     justOpenedModal = true;
+
+    drawToolbar.classList.add("hidden");
+    drawInfo.classList.add("hidden");
 
     openModalById("createModal");
 
