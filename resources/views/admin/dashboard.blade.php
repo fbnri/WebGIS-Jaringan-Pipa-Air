@@ -35,10 +35,17 @@
 
         {{-- MOBILE TOOLBAR --}}
         <div class="draw-hide md:hidden flex gap-2 mb-3 sticky top-0 z-10">
-            <button id="btnAddPipeMobile"
-            class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm flex items-center justify-center gap-2 focus:outline-none active:scale-95">
+            <button
+            id="btnAddPipeMobile"
+            class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm flex items-center justify-center gap-2">
                 <i class="fa-solid fa-draw-polygon"></i>
                 Tambah Jalur
+            </button>
+            <button
+            id="btnAddCustomerMobile"
+            class="flex-1 bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg text-sm flex items-center justify-center gap-2">
+                <i class="fa-solid fa-location-dot"></i>
+                Pelanggan
             </button>
         </div>
 
@@ -51,6 +58,13 @@
                 class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl shadow-lg flex items-center gap-2 text-sm">
                     <i class="fa-solid fa-draw-polygon"></i>
                     Tambah Jalur
+                </button>
+
+                {{-- ADD CUSTOMER --}}
+                <button id="btnAddCustomer"
+                class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-xl shadow-lg flex items-center gap-2 text-sm">
+                    <i class="fa-solid fa-location-dot"></i>
+                    Tambah Pelanggan
                 </button>
 
                 {{-- YEAR NAVIGATOR --}}
@@ -81,9 +95,9 @@
 
                             @for($y = $minYear; $y <= $maxYear; $y++)
                                 <button
-                                    class="year-option w-full text-center px-4 py-2 text-sm hover:bg-blue-50 transition
-                                    {{ ($year ?? $maxYear) == $y ? 'bg-blue-100 font-semibold text-blue-700' : '' }}"
-                                    data-year="{{ $y }}">
+                                class="year-option w-full text-center px-4 py-2 text-sm hover:bg-blue-50 transition
+                                {{ ($year ?? $maxYear) == $y ? 'bg-blue-100 font-semibold text-blue-700' : '' }}"
+                                data-year="{{ $y }}">
                                     {{ $y }}
                                 </button>
                             @endfor
@@ -106,8 +120,39 @@
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
+
+            {{-- MARKER TOOLBAR --}}
+            <div id="customerLocationToolbar"
+            class="hidden absolute bottom-10 left-1/2 -translate-x-1/2 z-[1000] bg-white rounded-xl shadow-xl border p-2 flex gap-2">
+                <button id="customerLocationCancel"
+                class="w-12 h-12 bg-gray-600 hover:bg-gray-700 text-white rounded-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <button id="customerLocationFinish"
+                class="w-12 h-12 bg-green-600 hover:bg-green-700 text-white rounded-lg">
+                    <i class="fa-solid fa-check"></i>
+                </button> 
+            </div>
+
+            {{-- CUSTOMER CREATE TOOLBAR --}}
+            <div id="customerCreateToolbar"
+            class="hidden absolute bottom-10 left-1/2 -translate-x-1/2 z-[1000] bg-white rounded-xl shadow-xl border p-2">
+                <button id="customerCreateCancel"
+                class="w-12 h-12 bg-gray-600 hover:bg-gray-700 text-white rounded-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            {{-- DRAW INFO --}}
             <div id="drawInfo" class="hidden absolute top-5 left-1/2 -translate-x-1/2 bg-black/70 text-white text-xs px-4 py-2 rounded-lg z-[1000]">
                 Klik peta untuk mulai menggambar | Enter: selesai | Esc: batal | Backspace: undo
+            </div>
+            <div id="customerLocationInfo" class="hidden absolute top-5 left-1/2 -translate-x-1/2 bg-black/70 text-white text-xs px-4 py-2 rounded-lg z-[1000]">
+                Geser marker lalu tekan ✓ untuk menyimpan atau ✕ untuk membatalkan
+            </div>
+            <div id="customerCreateInfo"
+            class="hidden absolute top-5 left-1/2 -translate-x-1/2 bg-black/70 text-white text-xs px-4 py-2 rounded-lg z-[1000]">
+                Klik peta untuk memilih lokasi pelanggan atau tekan ✕ untuk membatalkan
             </div>
 
             {{-- MOBILE YEAR PICKER --}}
@@ -120,8 +165,7 @@
             </div>
 
             {{-- MOBILE YEAR MODAL --}}
-            <div id="mobileYearModal"
-            class="fixed inset-0 bg-black/40 z-[99999] hidden items-end">
+            <div id="mobileYearModal" class="fixed inset-0 bg-black/40 z-[99999] hidden items-end">
                 <div class="bg-white w-full rounded-t-3xl p-4 animate-slideUp">
                     <div class="w-12 h-1 bg-gray-300 rounded-full mx-auto mb-4"></div>
                     <h2 class="text-center font-semibold mb-4">
@@ -132,9 +176,9 @@
 
                         @for($y = $minYear; $y <= $maxYear; $y++)
                             <button
-                                class="mobile-year-option block w-full py-4 text-lg snap-center
-                                {{ ($year ?? $maxYear) == $y ? 'font-bold text-blue-600' : 'text-gray-500' }}"
-                                data-year="{{ $y }}">
+                            class="mobile-year-option block w-full py-4 text-lg snap-center
+                            {{ ($year ?? $maxYear) == $y ? 'font-bold text-blue-600' : 'text-gray-500' }}"
+                            data-year="{{ $y }}">
                                 {{ $y }}
                             </button>
                         @endfor
@@ -175,11 +219,7 @@
                     </label>
                     <div class="my-2 border-t border-gray-300"></div>
                     <label class="flex items-center gap-2 text-sm">
-                        <input
-                            type="checkbox"
-                            id="toggleBoundary"
-                            checked
-                        >
+                        <input type="checkbox" id="toggleBoundary" checked>
                         Batas Wilayah
                     </label>
                 </div>
@@ -240,25 +280,24 @@
                     <input type="number" id="edit_length" min="0" step="0.01" class="w-full border rounded-lg p-2">
                 </div>
             </div>
-            <div class="flex justify-between mt-6">
+            <div class="flex flex-col gap-3 sm:flex-row sm:justify-between mt-6">
                 <div class="flex gap-2">
                     <button id="extendPipe"
-                        class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
-                        <i class="fa-solid fa-plus"></i>
+                    class="flex-1 sm:flex-none bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-lg">
                         Perpanjang
                     </button>
                     <button id="deletePipe"
-                        class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
+                    class="flex-1 sm:flex-none bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
                         Hapus
                     </button>
                 </div>
-                <div class="space-x-2">
+                <div class="flex gap-2">
                     <button id="cancelBtn"
-                        class="px-4 py-2 border rounded-lg">
+                    class="flex-1 sm:flex-none px-4 py-2 border rounded-lg">
                         Batal
                     </button>
                     <button id="saveEdit"
-                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
+                    class="flex-1 sm:flex-none bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
                         Simpan
                     </button>
                 </div>
@@ -278,11 +317,11 @@
             </p>
             <div class="flex gap-2">
                 <button id="cancelDelete"
-                    class="flex-1 px-4 py-2 border rounded-lg">
+                class="flex-1 px-4 py-2 border rounded-lg">
                     Batal
                 </button>
                 <button id="confirmDelete"
-                    class="flex-1 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
+                class="flex-1 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
                     Hapus
                 </button>
             </div>
@@ -321,8 +360,76 @@
                     Batal
                 </button>
                 <button id="saveCreate"
-                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
+                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
                     Simpan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    {{-- MODAL CREATE CUSTOMER --}}
+    <div id="customerModal"
+    class="fixed inset-0 hidden items-center justify-center bg-black/50 z-[99999] opacity-0 transition-opacity duration-200">
+        <div class="bg-white w-[90%] sm:max-w-md rounded-2xl p-6 shadow-xl transform scale-95 opacity-0 transition-all duration-200 modal-content">
+            <h2 id="customerModalTitle" class="text-lg font-semibold mb-4">
+                Tambah Pelanggan
+            </h2>
+            <div class="space-y-3">
+                <div>
+                    <label class="text-sm">
+                        Nama
+                    </label>
+                    <input id="customer_name" type="text" class="w-full border rounded-lg p-2">
+                </div>
+                <div>
+                    <label class="text-sm">
+                        Alamat
+                    </label>
+                    <textarea id="customer_address" rows="3" class="w-full border rounded-lg p-2"></textarea>
+                    <input id="customer_id" type="hidden">
+                </div>
+                <div>
+                    <label class="text-sm">
+                        Latitude
+                    </label>
+                    <input id="customer_lat" readonly class="w-full border rounded-lg p-2 bg-gray-100">
+                </div>
+                <div>
+                    <label class="text-sm">
+                        Longitude
+                    </label>
+                    <input id="customer_lng" readonly class="w-full border rounded-lg p-2 bg-gray-100">
+                </div>
+            </div>
+            <div class="flex justify-end gap-2 mt-6">
+                <button id="cancelCustomer"
+                class="px-4 py-2 border rounded-lg">
+                    Batal
+                </button>
+                <button id="saveCustomer" data-mode="create"
+                class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
+                    Simpan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    {{-- DELETE MODAL --}}
+    <div id="customerDeleteModal"
+    class="fixed inset-0 hidden items-center justify-center bg-black/50 z-[99999] opacity-0 transition-opacity duration-200">
+        <div class="bg-white w-[90%] sm:max-w-sm rounded-2xl p-6 shadow-xl transform scale-95 opacity-0 transition-all duration-200 modal-content">
+            <h2 class="text-lg font-semibold mb-2">
+                Hapus Pelanggan
+            </h2>
+            <p class="text-sm text-gray-500 mb-5">
+                Data pelanggan akan dihapus permanen.
+            </p>
+            <div class="flex gap-2">
+                <button id="cancelDeleteCustomer" class="flex-1 border rounded-lg py-2">
+                    Batal
+                </button>
+                <button id="confirmDeleteCustomer" class="flex-1 bg-red-600 text-white rounded-lg py-2">
+                    Hapus
                 </button>
             </div>
         </div>

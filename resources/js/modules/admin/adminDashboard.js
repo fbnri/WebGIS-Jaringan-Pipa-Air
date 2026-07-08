@@ -25,3 +25,9 @@ loadBandungBoundary();
 import './pipe/createPipe';
 import './pipe/updatePipe';
 import './pipe/deletePipe';
+
+// CUSTOMER
+import './customer/createCustomer';
+import './customer/editCustomerLocation';
+import './customer/editCustomer';
+import './customer/deleteCustomer';

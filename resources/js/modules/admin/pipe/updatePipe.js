@@ -12,7 +12,7 @@ document.getElementById("saveEdit").onclick = ()=>{
 
     saveBtn.innerHTML = `
         <i class="fa-solid fa-spinner fa-spin"></i>
-        <span>Menyimpan...</span>
+        <span>Simpan</span>
     `;
 
     let id = document.getElementById("edit_id").value;

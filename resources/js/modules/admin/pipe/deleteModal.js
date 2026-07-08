@@ -87,8 +87,6 @@ function initDeleteModal(){
             return;
         }
 
-        confirmBtn.onclick = null;
-
         isDeleting = true;
         confirmBtn.disabled = true;
 

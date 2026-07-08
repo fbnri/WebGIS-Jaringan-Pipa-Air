@@ -10,22 +10,40 @@ class CustomerController extends Controller
 {
     public function store(Request $request)
     {
-        $customer = Customer::create([
-            'name' => $request->name,
-            'address' => $request->address,
-            'latitude' => $request->latitude,
-            'longitude' => $request->longitude,
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'address' => 'nullable|string',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric'
+        ],[
+            'name.required' => 'Nama pelanggan wajib diisi',
+            'latitude.required' => 'Lokasi belum dipilih',
+            'longitude.required' => 'Lokasi belum dipilih'
         ]);
+
+        $customer = Customer::create($validated);
 
         return response()->json($customer);
     }
 
     public function update(Request $request, Customer $customer)
     {
-        $customer->update($request->all());
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'address' => 'nullable|string',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric'
+        ],[
+            'name.required' => 'Nama pelanggan wajib diisi',
+            'latitude.required' => 'Latitude wajib ada',
+            'longitude.required' => 'Longitude wajib ada'
+        ]);
+
+        $customer->update($validated);
 
         return response()->json([
-            'success' => true
+            'success'=>true,
+            'customer'=>$customer
         ]);
     }
 
