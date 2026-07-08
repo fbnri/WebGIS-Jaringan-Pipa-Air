@@ -99,7 +99,7 @@ function initDeleteModal(){
 
         confirmBtn.innerHTML = `
             <i class="fa-solid fa-spinner fa-spin"></i>
-            <span>Menghapus...</span>
+            <span>Tunggu...</span>
         `;
 
         fetch(`/admin/pipes/${deleteId}`, {

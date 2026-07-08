@@ -89,7 +89,7 @@ function initEditModal(){
 
         saveBtn.innerHTML = `
             <i class="fa-solid fa-spinner fa-spin"></i>
-            <span>Simpan</span>
+            <span>Tunggu...</span>
         `;
 
         let id = document.getElementById("edit_id").value;

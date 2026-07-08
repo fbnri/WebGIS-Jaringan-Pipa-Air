@@ -14,13 +14,13 @@
                 <h2 class="font-semibold text-lg mb-4">
                     Profil Akun
                 </h2>
-                <form method="POST" action="{{ route('settings.profile') }}" class="space-y-4">
+                <form id="profileForm" method="POST" action="{{ route('settings.profile') }}" class="space-y-4">
                     @csrf
                     @method('PUT')
 
                     <input name="name" value="{{ auth()->user()->name }}" class="w-full rounded-xl border-gray-300" placeholder="Nama">
                     <input name="email" value="{{ auth()->user()->email }}" class="w-full rounded-xl border-gray-300" placeholder="Email">
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl">
+                    <button id="btnUpdateProfile" class="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:hover:bg-gray-400 disabled:cursor-not-allowed text-white px-5 py-2 rounded-xl">
                         Update Profil
                     </button>
                 </form>
@@ -29,7 +29,7 @@
                 <h2 class="font-semibold text-lg mb-4">
                     Ganti Password
                 </h2>
-                <form method="POST" action="{{ route('settings.password') }}" class="space-y-4">
+                <form id="passwordForm" method="POST" action="{{ route('settings.password') }}" class="space-y-4">
                     @csrf
                     @method('PUT')
 
@@ -65,7 +65,7 @@
                             <i id="iconConfirm" class="fa-solid fa-eye"></i>
                         </button>
                     </div>
-                    <button class="bg-gray-900 hover:bg-gray-700 text-white px-5 py-2 rounded-xl">
+                    <button id="btnUpdatePassword" class="bg-gray-900 hover:bg-gray-700 disabled:bg-gray-400 disabled:hover:bg-gray-400 disabled:cursor-not-allowed text-white px-5 py-2 rounded-xl">
                         Ganti Password
                     </button>
                 </form>
@@ -135,6 +135,31 @@
                     }
                 }
             });
+        });
+    </script>
+
+    <script>
+        const profileForm = document.getElementById("profileForm");
+        const passwordForm = document.getElementById("passwordForm");
+
+        profileForm.addEventListener("submit", function () {
+            const btn = document.getElementById("btnUpdateProfile");
+
+            btn.disabled = true;
+            btn.innerHTML = `
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                Tunggu...
+            `;
+        });
+
+        passwordForm.addEventListener("submit", function () {
+            const btn = document.getElementById("btnUpdatePassword");
+
+            btn.disabled = true;
+            btn.innerHTML = `
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                Tunggu...
+            `;
         });
     </script>
 

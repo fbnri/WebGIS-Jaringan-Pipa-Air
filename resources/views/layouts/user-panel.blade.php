@@ -95,8 +95,8 @@
 
         {{-- LOGIN ADMIN --}}
         <div class="mt-auto p-4">
-            <a href="{{ route('login') }}"
-            class="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg">
+            <a href="{{ route('login') }}" id="loginAdminBtn"
+            class="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition duration-200">
                 <i class="fa-solid fa-right-to-bracket"></i>
                 <span
                 :class="sidebarCollapsed
@@ -145,6 +145,40 @@
 </div>
 
 @stack('scripts')
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const loginBtn = document.getElementById("loginAdminBtn");
+
+        if(!loginBtn) return;
+
+        loginBtn.addEventListener("click", function(e){
+            e.preventDefault();
+
+            if(loginBtn.dataset.loading) return;
+
+            loginBtn.dataset.loading = "true";
+
+            loginBtn.classList.remove(
+                "bg-blue-600",
+                "hover:bg-blue-700"
+            );
+
+            loginBtn.classList.add(
+                "bg-gray-400",
+                "cursor-not-allowed",
+                "pointer-events-none"
+            );
+
+            loginBtn.innerHTML = `
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                <span>Tunggu...</span>
+            `;
+
+            window.location.href = loginBtn.href;
+        });
+    });
+</script>
 
 </body>
 </html>

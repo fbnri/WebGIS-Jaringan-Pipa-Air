@@ -44,7 +44,7 @@ confirmDeleteBtn.onclick = () => {
 
     confirmDeleteBtn.innerHTML = `
         <i class="fa-solid fa-spinner fa-spin"></i>
-        <span>Menghapus...</span>
+        <span>Tunggu...</span>
     `;
 
     console.log("DELETE ID =", id);

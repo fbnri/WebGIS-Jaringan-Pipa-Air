@@ -25,7 +25,7 @@ document.getElementById("saveCreate").onclick = ()=>{
 
     saveBtn.innerHTML = `
         <i class="fa-solid fa-spinner fa-spin"></i>
-        <span>Menyimpan...</span>
+        <span>Tunggu...</span>
     `;
 
     const name = document.getElementById("create_name").value.trim();
