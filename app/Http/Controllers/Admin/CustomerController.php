@@ -14,11 +14,13 @@ class CustomerController extends Controller
             'name' => 'required|string|max:255',
             'address' => 'nullable|string',
             'latitude' => 'required|numeric',
-            'longitude' => 'required|numeric'
+            'longitude' => 'required|numeric',
+            'subscribed_at' => 'required|date'
         ],[
             'name.required' => 'Nama pelanggan wajib diisi',
             'latitude.required' => 'Lokasi belum dipilih',
-            'longitude.required' => 'Lokasi belum dipilih'
+            'longitude.required' => 'Lokasi belum dipilih',
+            'subscribed_at.required' => 'Tanggal berlangganan wajib diisi'
         ]);
 
         $customer = Customer::create($validated);
@@ -32,11 +34,13 @@ class CustomerController extends Controller
             'name' => 'required|string|max:255',
             'address' => 'nullable|string',
             'latitude' => 'required|numeric',
-            'longitude' => 'required|numeric'
+            'longitude' => 'required|numeric',
+            'subscribed_at' => 'required|date'
         ],[
             'name.required' => 'Nama pelanggan wajib diisi',
             'latitude.required' => 'Latitude wajib ada',
-            'longitude.required' => 'Longitude wajib ada'
+            'longitude.required' => 'Longitude wajib ada',
+            'subscribed_at.required' => 'Tanggal berlangganan wajib diisi'
         ]);
 
         $customer->update($validated);

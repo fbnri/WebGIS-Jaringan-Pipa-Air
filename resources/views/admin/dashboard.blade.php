@@ -231,24 +231,7 @@
                     <i class="fa-solid fa-layer-group text-gray-600"></i>
                     Legenda
                 </p>
-                <div class="space-y-2">
-                    <div class="flex items-center gap-2">
-                        <div class="w-6 h-1 bg-blue-600 rounded flex-shrink-0"></div>
-                        <span>Terpasang</span>
-                    </div>
-
-                    <div class="flex items-center gap-2">
-                        <div class="w-6 h-1 bg-cyan-300 rounded flex-shrink-0"></div>
-                        <span>Perencanaan</span>
-                    </div>
-
-                    <div class="flex items-center gap-2">
-                        <div class="w-6 flex justify-center flex-shrink-0">
-                            <i class="fa-solid fa-location-dot text-red-500"></i>
-                        </div>
-                        <span>Pelanggan</span>
-                    </div>
-                </div>
+                <div id="legendItems" class="space-y-2"></div>
             </div>
         </div>
     </div>
@@ -387,6 +370,15 @@
                     </label>
                     <textarea id="customer_address" rows="3" class="w-full border rounded-lg p-2"></textarea>
                     <input id="customer_id" type="hidden">
+                </div>
+                <div>
+                    <label class="text-sm">
+                        Tanggal Berlangganan
+                    </label>
+                    <input
+                        type="date"
+                        id="customer_subscribed_at"
+                        class="w-full border rounded-lg p-2">
                 </div>
                 <div>
                     <label class="text-sm">

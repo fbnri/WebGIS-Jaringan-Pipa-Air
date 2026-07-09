@@ -26,6 +26,15 @@ window.renderCustomers = function () {
     customerLayers = [];
 
     customersData.forEach(customer => {
+        const subscribedYear = customer.subscribed_at ? new Date(customer.subscribed_at).getFullYear() : null;
+
+        if (
+            subscribedYear &&
+            subscribedYear > selectedYear
+        ){
+            return;
+        }
+
         const marker = L.marker(
             [
                 customer.latitude,
@@ -45,6 +54,14 @@ window.renderCustomers = function () {
                 </div>
                 <div class="text-xs text-gray-500 mb-2 leading-relaxed">
                     ${customer.address ?? '-'}
+                </div>
+                <div class="text-xs text-gray-500 mb-2">
+                    Mulai Berlangganan :
+                    <span class="font-medium">
+                        ${
+                            customer.subscribed_at ? customer.subscribed_at : "-"
+                        }
+                    </span>
                 </div>
                 <div class="grid grid-cols-2 gap-2 mb-2">
                     <div class="bg-gray-100 rounded-md p-2">
@@ -80,8 +97,8 @@ window.renderCustomers = function () {
                     <button
                         title="Hapus"
                         class="deleteCustomer h-8 bg-red-600 hover:bg-red-700 text-white rounded-md text-[11px]"
+                        data-id="${customer.id}">
                         <i class="fa-solid fa-trash"></i>
-                        Hapus
                     </button>
                 </div>
             </div>

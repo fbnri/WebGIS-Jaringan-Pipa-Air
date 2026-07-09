@@ -18,6 +18,7 @@ window.openCustomerEdit = function(customer){
     document.getElementById("customer_id").value = customer.id;
     document.getElementById("customer_name").value = customer.name;
     document.getElementById("customer_address").value = customer.address ?? "";
+    document.getElementById("customer_subscribed_at").value = customer.subscribed_at ?? "";
     document.getElementById("customer_lat").value = customer.latitude;
     document.getElementById("customer_lng").value = customer.longitude;
 

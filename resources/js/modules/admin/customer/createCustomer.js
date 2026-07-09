@@ -128,11 +128,23 @@ document.getElementById("saveCustomer").addEventListener("click",async()=>{
         return;
     }
 
+    const subscribedAt = document.getElementById("customer_subscribed_at").value;
+
+    if(subscribedAt === ""){
+        showToast(
+            "Tanggal berlangganan wajib diisi",
+            "error"
+        );
+
+        return;
+    }
+
     const body={
         name:name,
         address:document.getElementById("customer_address").value,
         latitude:document.getElementById("customer_lat").value,
-        longitude:document.getElementById("customer_lng").value
+        longitude:document.getElementById("customer_lng").value,
+        subscribed_at: subscribedAt
     };
 
     const mode = document.getElementById("saveCustomer").dataset.mode;
@@ -195,6 +207,7 @@ document.getElementById("saveCustomer").addEventListener("click",async()=>{
 
     document.getElementById("customer_name").value="";
     document.getElementById("customer_address").value="";
+    document.getElementById("customer_subscribed_at").value="";
     document.getElementById("customer_lat").value="";
     document.getElementById("customer_lng").value="";
     document.getElementById("customer_id").value="";

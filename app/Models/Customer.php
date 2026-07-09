@@ -10,6 +10,7 @@ class Customer extends Model
         'name',
         'address',
         'latitude',
-        'longitude'
+        'longitude',
+        'subscribed_at'
     ];
 }

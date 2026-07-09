@@ -2,6 +2,7 @@ import {
     isDrawing,
     getDrawMode
 } from "./drawState";
+import updateLegend from "./updateLegend";
 
 window.selectedYear = window.currentYear;
 
@@ -12,11 +13,21 @@ window.renderPipes = function(){
 
     pipeLayers = {};
 
+    let hasInstalled = false;
+    let hasPlanning = false;
+
     pipesData.forEach(pipe => {
         if(!pipe.geometry) return;
 
         const geojson = {type:"Feature", geometry:JSON.parse(pipe.geometry)};
         const isInstalled = pipe.installed_at && new Date(pipe.installed_at).getFullYear() <= selectedYear;
+
+        if (isInstalled) {
+            hasInstalled = true;
+        } else {
+            hasPlanning = true;
+        }
+
         const pipeColor = isInstalled ? "royalblue" : "cyan";
         const layer = L.geoJSON(geojson,{
             style:{
@@ -95,6 +106,13 @@ window.renderPipes = function(){
                 },200);
             };
         });
+    });
+    const hasCustomer = customersData.length > 0;
+
+    updateLegend({
+        hasInstalled,
+        hasPlanning,
+        hasCustomer
     });
 }
 renderPipes();

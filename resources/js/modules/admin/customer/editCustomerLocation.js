@@ -91,7 +91,8 @@ finish.onclick = async ()=>{
                     name:currentCustomer.name,
                     address:currentCustomer.address,
                     latitude:pos.lat,
-                    longitude:pos.lng
+                    longitude:pos.lng,
+                    subscribed_at: currentCustomer.subscribed_at
                 })
             }
         );
