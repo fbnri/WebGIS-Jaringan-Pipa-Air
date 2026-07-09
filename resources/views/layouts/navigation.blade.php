@@ -108,6 +108,25 @@
                     </span>
                 </a>
 
+                {{-- DATA PELANGGAN --}}
+                <a href="{{ route('admin.customers.index') }}"
+                :class="sidebarCollapsed
+                ? 'md:justify-center md:gap-0 gap-3'
+                : 'gap-3'"
+                class="group flex items-center px-3 py-2 rounded-lg
+                {{ request()->routeIs('admin.customers.*')
+                ? 'bg-gray-800 text-white'
+                : 'hover:bg-gray-800 text-gray-300' }}">
+                    <i class="fa-solid fa-users w-5 text-center flex-shrink-0 transition-transform duration-200 group-hover:scale-110"></i>
+
+                    <span
+                    :class="sidebarCollapsed
+                    ? 'md:hidden inline-block ml-2'
+                    : 'inline-block ml-2'">
+                        Data Pelanggan
+                    </span>
+                </a>
+
                 {{-- SUPER ADMIN --}}
                 @if(auth()->user()->role == 'super_admin')
                     <a href="{{ route('super.users') }}"
