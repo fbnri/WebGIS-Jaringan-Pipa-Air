@@ -6,7 +6,7 @@
         hidden>
     </div>
 
-    <div class="p-4 md:p-6 space-y-6">
+    <div class="p-4 md:p-6 max-w-full h-[calc(100vh-64px)] md:h-[calc(100vh-112px)] flex flex-col min-h-0">
 
         {{-- HEADER --}}
         <div class="flex-none flex flex-col md:flex-row md:items-center md:justify-between gap-3 relative mb-6">
@@ -43,19 +43,19 @@
                     {{-- HEADER TABLE --}}
                     <thead class="sticky top-0 z-20 bg-gray-100 text-gray-600 uppercase text-xs">
                         <tr>
-                            <th class="px-4 py-3 text-left">
+                            <th class="px-4 py-3 min-w-[70px] text-left">
                                 No.
                             </th>
-                            <th class="px-4 py-3 text-left">
+                            <th class="px-4 py-3 min-w-[220px] text-left">
                                 Nama
                             </th>
-                            <th class="px-4 py-3 text-left">
+                            <th class="px-4 py-3 min-w-[260px] text-left">
                                 Email
                             </th>
-                            <th class="px-4 py-3 text-left">
+                            <th class="px-4 py-3 min-w-[140px] text-left">
                                 Status
                             </th>
-                            <th class="px-6 py-4 text-center">
+                            <th class="px-4 py-3 min-w-[220px] text-center">
                                 Aksi
                             </th>
                         </tr>
@@ -63,16 +63,16 @@
                     <tbody class="divide-y bg-white">
                         @foreach($admins as $admin)
                             <tr class="hover:bg-blue-50/50 transition">
-                                <td class="px-4 py-3 text-center text-gray-500">
+                                <td class="px-4 py-3 min-w-[70px] text-center text-gray-500">
                                     {{ $admins->firstItem() + $loop->index }}
                                 </td>
-                                <td class="px-4 py-3 font-semibold text-gray-800">
+                                <td class="px-4 py-3 min-w-[220px] font-semibold text-gray-800">
                                     {{ $admin->name }}
                                 </td>
-                                <td class="px-4 py-3 text-gray-600">
+                                <td class="px-4 py-3 min-w-[260px] text-gray-600">
                                     {{ $admin->email }}
                                 </td>
-                                <td class="px-4 py-3">
+                                <td class="px-4 py-3 min-w-[140px]">
                                     @if($admin->is_active)
                                         <span class="inline-flex px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
                                             Aktif
@@ -83,7 +83,7 @@
                                         </span>
                                     @endif
                                 </td>
-                                <td class="px-4 py-3">
+                                <td class="px-4 py-3 min-w-[220px]">
                                     <div class="flex justify-center gap-2">
 
                                         {{-- RESET PASSWORD --}}
