@@ -14,23 +14,25 @@
                 </p>
             </div>
 
-            {{-- SEARCH --}}
-            <div class="w-full md:w-auto">
-                <form method="GET" class="flex items-center gap-2">
-                    <input
-                        type="text"
-                        name="search"
-                        autocomplete="off"
-                        value="{{ request('search') }}"
-                        placeholder="Cari nama atau alamat pelanggan..."
-                        class="flex-1 px-3 py-2 rounded-xl border text-sm focus:ring-2 focus:ring-blue-500">
-                    <button
-                        type="submit"
-                        class="bg-blue-600 text-white px-3 py-2 rounded-xl text-sm">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </button>
-                </form>
-            </div>
+            {{-- SEARCH + FILTER --}}
+            <form method="GET" class="flex items-center gap-2 w-full md:w-auto">
+
+                {{-- SEARCH --}}
+                <input 
+                    type="text"
+                    name="search"
+                    autocomplete="off"
+                    value="{{ request('search') }}"
+                    placeholder="Cari pelanggan..."
+                    class="flex-1 px-3 py-2 rounded-xl border text-sm focus:ring-2 focus:ring-blue-500">
+
+                {{-- SEARCH BUTTON --}}
+                <button
+                    type="submit"
+                    class="bg-blue-600 text-white px-3 py-2 rounded-xl text-sm">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
         </div>
 
         {{-- TABLE --}}
@@ -39,19 +41,19 @@
                 <table class="min-w-max w-full text-sm text-left">
                     <thead class="sticky top-0 z-20 bg-gray-100 text-gray-600 uppercase text-xs">
                         <tr>
-                            <th class="px-4 py-3 min-w-[70px] text-center">
+                            <th class="px-4 py-3 min-w-[70px] text-left">
                                 No.
                             </th>
-                            <th class="px-4 py-3 min-w-[220px]">
+                            <th class="px-4 py-3 min-w-[220px] text-left">
                                 Nama
                             </th>
-                            <th class="px-4 py-3 min-w-[320px]">
+                            <th class="px-4 py-3 min-w-[320px] whitespace-nowrap">
                                 Alamat
                             </th>
-                            <th class="px-4 py-3 min-w-[180px]">
+                            <th class="px-4 py-3 min-w-[180px] text-center whitespace-nowrap">
                                 Mulai Berlangganan
                             </th>
-                            <th class="px-4 py-3 min-w-[180px] text-center">
+                            <th class="px-4 py-3 min-w-[110px] text-center">
                                 Aksi
                             </th>
                         </tr>
@@ -59,36 +61,42 @@
                     <tbody class="divide-y bg-white">
                         @forelse($customers as $customer)
                             <tr class="hover:bg-blue-50/50 transition">
-                                <td class="px-4 py-3 text-center text-gray-500">
+                                <td class="px-4 py-3 min-w-[70px] text-center text-gray-500">
                                     {{ $customers->firstItem() + $loop->index }}
                                 </td>
-                                <td class="px-4 py-3 font-semibold text-gray-800">
-                                    {{ $customer->name }}
+                                <td class="px-4 py-3 min-w-[220px] font-semibold text-gray-800">
+                                    <div class="font-semibold text-gray-800">
+                                        {{ $customer->name }}
+                                    </div>
                                 </td>
-                                <td class="px-4 py-3 text-gray-600">
+                                <td class="px-4 py-3 min-w-[320px] text-gray-600">
                                     {{ $customer->address ?? '-' }}
                                 </td>
-                                <td class="px-4 py-3 text-gray-600">
-                                    {{ \Carbon\Carbon::parse($customer->subscribed_at)->format('d M Y') }}
+                                <td class="px-4 py-3 min-w-[180px] text-gray-600 whitespace-nowrap">
+                                    {{ $customer->subscribed_at 
+                                    ? \Carbon\Carbon::parse($customer->subscribed_at)->format('d M Y')
+                                    : '-'
+                                    }}
                                 </td>
-                                <td class="px-4 py-3">
+                                <td class="px-4 py-3 min-w-[110px]">
                                     <div class="flex justify-center gap-2">
-
-                                        {{-- EDIT --}}
-                                        <button type="button" title="Edit"
+                                        <button
+                                        type="button"
+                                        title="Edit"
                                         data-id="{{ $customer->id }}"
                                         data-name="{{ $customer->name }}"
                                         data-address="{{ $customer->address }}"
                                         data-subscribed="{{ $customer->subscribed_at }}"
                                         data-latitude="{{ $customer->latitude }}"
                                         data-longitude="{{ $customer->longitude }}"
-                                        class="editCustomerBtn bg-amber-100 hover:bg-amber-200 text-amber-600 w-9 h-9 rounded-xl flex items-center justify-center">
+                                        class="editCustomerBtn w-9 h-9 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-600 flex items-center justify-center">
                                             <i class="fa-solid fa-pen-to-square"></i>
                                         </button>
-
-                                        {{-- DELETE --}}
-                                        <button type="button" title="Hapus"
-                                        class="bg-red-100 hover:bg-red-200 text-red-600 w-9 h-9 rounded-xl flex items-center justify-center">
+                                        <button
+                                        type="button"
+                                        title="Hapus"
+                                        data-id="{{ $customer->id }}"
+                                        class="deleteCustomerBtn w-9 h-9 rounded-xl bg-red-100 hover:bg-red-200 text-red-600 flex items-center justify-center">
                                             <i class="fa-solid fa-trash"></i>
                                         </button>
                                     </div>

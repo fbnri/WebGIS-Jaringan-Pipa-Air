@@ -1,12 +1,12 @@
-// SHARED
 import './ui/toast';
 import '../shared/ui/modalHelper';
 
-// CUSTOMER TABLE
 import initEditCustomerTable from './customer/editCustomerTable';
 import initDeleteCustomerTable from './customer/deleteCustomerTable';
+import initFilterPanel from '../shared/ui/filterPanel';
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded",()=>{
+    initFilterPanel();
     initEditCustomerTable();
     initDeleteCustomerTable();
 });
