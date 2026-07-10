@@ -101,7 +101,7 @@
                     <tbody class="divide-y bg-white">
                         @forelse ($pipes as $index => $pipe)
                             <tr class="hover:bg-blue-50/50 transition">
-                                <td class="md:sticky md:left-0 z-0 bg-white px-4 py-3">{{ $pipes->firstItem() + $index }}</td>
+                                <td class="md:sticky md:left-0 z-0 bg-white px-4 py-3 text-center">{{ $pipes->firstItem() + $index }}</td>
                                 <td class="md:sticky md:left-[70px] z-0 bg-white px-4 py-3 min-w-[220px]">
                                     <div class="flex items-center gap-2 font-semibold text-gray-800">
                                         {{ $pipe->name }}

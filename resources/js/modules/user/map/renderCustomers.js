@@ -15,17 +15,31 @@ const customerIcon = L.divIcon({
 });
 
 window.customerLayers = [];
+window.hasCustomerMarker = false;
 
 window.renderCustomers = function () {
     if (!window.customersData) return;
 
-    customerLayers.forEach(layer => {
+    window.customerLayers.forEach(layer => {
         map.removeLayer(layer);
     });
 
-    customerLayers = [];
+    window.customerLayers = [];
+    window.hasCustomerMarker = false;
 
     customersData.forEach(customer => {
+        const subscribedYear = customer.subscribed_at
+        ? new Date(customer.subscribed_at).getFullYear()
+        : null;
+
+        // FILTER TAHUN
+        if(
+            subscribedYear &&
+            subscribedYear > window.currentYear
+        ){
+            return;
+        }
+
         const marker = L.marker(
             [
                 customer.latitude,
@@ -33,24 +47,57 @@ window.renderCustomers = function () {
             ],
             {
                 icon: customerIcon,
-                zIndexOffset: 1000
+                zIndexOffset:1000
             }
         ).addTo(map);
 
         marker.bindPopup(`
-            <div class="min-w-[200px]">
-                <div class="font-bold text-red-600 mb-2">
+            <div class="min-w-[215px]">
+                <div class="font-semibold text-red-600 text-sm mb-1 flex items-center gap-1">
                     <i class="fa-solid fa-location-dot"></i>
                     ${customer.name}
                 </div>
-
-                <div class="text-sm text-gray-600">
+                <div class="text-xs text-gray-500 mb-2 leading-relaxed">
                     ${customer.address ?? '-'}
+                </div>
+                <div class="text-xs text-gray-500 mb-2">
+                    Mulai Berlangganan :
+                    <span class="font-medium">
+                        ${
+                            customer.subscribed_at
+                            ? new Date(customer.subscribed_at).toLocaleDateString('id-ID', {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric'
+                            })
+                            : '-'
+                        }
+                    </span>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="bg-gray-100 rounded-md p-2">
+                        <div class="text-[10px] text-gray-500">
+                            Latitude
+                        </div>
+                        <div class="text-[11px] font-medium break-all">
+                            ${Number(customer.latitude).toFixed(7)}
+                        </div>
+                    </div>
+                    <div class="bg-gray-100 rounded-md p-2">
+                        <div class="text-[10px] text-gray-500">
+                            Longitude
+                        </div>
+                        <div class="text-[11px] font-medium break-all">
+                            ${Number(customer.longitude).toFixed(7)}
+                        </div>
+                    </div>
                 </div>
             </div>
         `);
 
-        customerLayers.push(marker);
+        window.hasCustomerMarker = true;
+
+        window.customerLayers.push(marker);
     });
 };
 

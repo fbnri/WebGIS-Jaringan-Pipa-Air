@@ -119,16 +119,7 @@
                     <i class="fa-solid fa-layer-group text-gray-600"></i>
                     Legenda
                 </p>
-                <div class="space-y-2">
-                    <div class="flex items-center gap-2">
-                        <div class="w-6 h-1 bg-blue-600 rounded"></div>
-                        <span>Terpasang</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <div class="w-6 h-1 bg-cyan-300 rounded"></div>
-                        <span>Perencanaan</span>
-                    </div>
-                </div>
+                <div id="legendContent" class="space-y-2"></div>
             </div>
         </div>
     </div>

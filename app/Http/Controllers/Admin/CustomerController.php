@@ -31,6 +31,29 @@ class CustomerController extends Controller
         );
     }
 
+    public function publicCustomers(Request $request)
+    {
+        $search = $request->search;
+
+        $customers = Customer::when($search, function ($query) use ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                ->orWhere('address', 'like', "%{$search}%");
+            });
+        })
+        ->latest()
+        ->paginate(10)
+        ->withQueryString();
+
+        return view(
+            'user.customers',
+            compact(
+                'customers',
+                'search'
+            )
+        );
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([

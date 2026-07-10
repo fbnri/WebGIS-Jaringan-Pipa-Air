@@ -71,7 +71,7 @@ class PipeController extends Controller
             $query->whereYear('planned_at', '<=', $year);
         })->get();
 
-        $customers = Customer::all();
+        $customers = Customer::latest()->get();
 
         $minPlanned = Pipe::min(DB::raw('YEAR(planned_at)'));
         $minInstalled = Pipe::min(DB::raw('YEAR(installed_at)'));
@@ -177,7 +177,7 @@ class PipeController extends Controller
             $query->whereYear('planned_at', '<=', $year);
         })->get();
 
-        $customers = Customer::all();
+        $customers = Customer::latest()->get();
 
         $minPlanned = Pipe::min(DB::raw('YEAR(planned_at)'));
         $minInstalled = Pipe::min(DB::raw('YEAR(installed_at)'));

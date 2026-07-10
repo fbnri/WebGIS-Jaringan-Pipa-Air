@@ -115,3 +115,55 @@ window.renderUserPipes = function(){
 };
 
 renderUserPipes();
+
+window.updatePipeLegend = function(){
+    const legend = document.getElementById("legendContent");
+
+    if(!legend) return;
+
+    let html = "";
+    let hasInstalled = false;
+    let hasPlanning = false;
+
+    pipesData.forEach(pipe => {
+        const isInstalled =
+        pipe.installed_at &&
+        new Date(pipe.installed_at).getFullYear() <= selectedYear;
+
+        if(isInstalled){
+            hasInstalled = true;
+        }else{
+            hasPlanning = true;
+        }
+    });
+
+    if(hasInstalled){
+        html += `
+            <div class="flex items-center gap-2">
+                <div class="w-6 h-1 rounded"
+                style="background:royalblue">
+                </div>
+                <span>
+                    Terpasang
+                </span>
+            </div>
+        `;
+    }
+
+    if(hasPlanning){
+        html += `
+            <div class="flex items-center gap-2">
+                <div class="w-6 h-1 rounded"
+                style="background:cyan">
+                </div>
+                <span>
+                    Perencanaan
+                </span>
+            </div>
+        `;
+    }
+
+    legend.innerHTML = html;
+}
+
+updatePipeLegend();

@@ -91,6 +91,21 @@
                     Data Pipa
                 </span>
             </a>
+
+            {{-- DATA PELANGGAN --}}
+            <a href="{{ route('user.customers') }}"
+            class="group flex items-center gap-3 px-3 py-2 rounded-lg
+            {{ request()->routeIs('user.customers')
+            ? 'bg-gray-800 text-white'
+            : 'hover:bg-gray-800 text-gray-300' }}">
+                <i class="fa-solid fa-users w-5 text-center"></i>
+                <span
+                :class="sidebarCollapsed
+                ? 'md:hidden'
+                : 'inline-block'">
+                    Data Pelanggan
+                </span>
+            </a>
         </nav>
 
         {{-- LOGIN ADMIN --}}
