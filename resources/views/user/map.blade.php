@@ -101,7 +101,7 @@
 
                 {{-- PANEL --}}
                 <div id="layerPanel"
-                class="absolute right-0 mt-2 w-40 bg-white/70 backdrop-blur-md rounded-xl shadow-lg border border-white/40 p-3 opacity-0 scale-95 pointer-events-none transition-all duration-200">
+                class="absolute right-0 mt-2 w-44 bg-white/70 backdrop-blur-md rounded-xl shadow-lg border border-white/40 p-3 opacity-0 scale-95 pointer-events-none transition-all duration-200">
                     <label class="flex items-center gap-2 text-sm cursor-pointer">
                         <input type="radio" name="basemap" value="osm" checked>
                         OpenStreetMap
@@ -109,6 +109,13 @@
                     <label class="flex items-center gap-2 text-sm cursor-pointer">
                         <input type="radio" name="basemap" value="sat">
                         Satelit
+                    </label>
+                    <div class="my-2 border-t border-gray-300"></div>
+                    <label class="flex items-center gap-2 text-sm cursor-pointer">
+                        <input type="checkbox"
+                            id="toggleBoundary"
+                            checked>
+                        Batas Wilayah
                     </label>
                 </div>
             </div>
