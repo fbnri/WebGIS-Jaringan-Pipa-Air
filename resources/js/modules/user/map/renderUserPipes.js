@@ -116,54 +116,89 @@ window.renderUserPipes = function(){
 
 renderUserPipes();
 
-window.updatePipeLegend = function(){
+window.updatePipeLegend = function () {
     const legend = document.getElementById("legendContent");
 
-    if(!legend) return;
+    if (!legend) {
+        return;
+    }
 
     let html = "";
+
     let hasInstalled = false;
     let hasPlanning = false;
+    let hasCustomer = false;
 
     pipesData.forEach(pipe => {
-        const isInstalled =
-        pipe.installed_at &&
-        new Date(pipe.installed_at).getFullYear() <= selectedYear;
+        const plannedYear = pipe.planned_at
+            ? new Date(pipe.planned_at).getFullYear()
+            : null;
 
-        if(isInstalled){
+        const installedYear = pipe.installed_at
+            ? new Date(pipe.installed_at).getFullYear()
+            : null;
+
+        if (plannedYear && plannedYear > selectedYear) {
+            return;
+        }
+
+        if (
+            installedYear &&
+            installedYear <= selectedYear
+        ) {
             hasInstalled = true;
-        }else{
+        } else {
             hasPlanning = true;
         }
     });
 
-    if(hasInstalled){
+    customersData.forEach(customer => {
+        const subscribedYear = customer.subscribed_at
+            ? new Date(customer.subscribed_at).getFullYear()
+            : null;
+
+        if (
+            !subscribedYear ||
+            subscribedYear <= selectedYear
+        ) {
+            hasCustomer = true;
+        }
+    });
+
+    if (hasInstalled) {
         html += `
             <div class="flex items-center gap-2">
-                <div class="w-6 h-1 rounded"
-                style="background:royalblue">
+                <div class="w-6 flex-shrink-0">
+                    <div class="w-6 h-1 bg-blue-600 rounded"></div>
                 </div>
-                <span>
-                    Terpasang
-                </span>
+                <span>Terpasang</span>
             </div>
         `;
     }
 
-    if(hasPlanning){
+    if (hasPlanning) {
         html += `
             <div class="flex items-center gap-2">
-                <div class="w-6 h-1 rounded"
-                style="background:cyan">
+                <div class="w-6 flex-shrink-0">
+                    <div class="w-6 h-1 bg-cyan-300 rounded"></div>
                 </div>
-                <span>
-                    Perencanaan
-                </span>
+                <span>Perencanaan</span>
             </div>
         `;
     }
+
+    if (hasCustomer) {
+    html += `
+        <div class="flex items-center gap-2">
+            <div class="w-6 flex justify-center flex-shrink-0">
+                <i class="fa-solid fa-location-dot text-red-500"></i>
+            </div>
+            <span>Pelanggan</span>
+        </div>
+    `;
+}
 
     legend.innerHTML = html;
-}
+};
 
 updatePipeLegend();
