@@ -7,8 +7,17 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/js/app.js',
-                'resources/js/modules/user.js',
-                'resources/js/modules/adminManagement.js',
+
+                // USER
+                'resources/js/modules/user/userMap.js',
+
+                // ADMIN
+                'resources/js/modules/admin/adminDashboard.js',
+                'resources/js/modules/admin/adminCustomer.js',
+                'resources/js/modules/admin/adminPipe.js',
+
+                // SUPER ADMIN
+                'resources/js/modules/super-admin/superAdminUsers.js',
             ],
             refresh: true,
         }),
