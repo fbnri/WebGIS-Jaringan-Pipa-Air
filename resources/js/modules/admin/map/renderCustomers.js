@@ -56,7 +56,7 @@ window.renderCustomers = function () {
                     ${customer.address ?? '-'}
                 </div>
                 <div class="text-xs text-gray-500 mb-2">
-                    Mulai Berlangganan :
+                    Mengajukan Sambungan :
                     <span class="font-medium">
                         ${
                             customer.subscribed_at ? customer.subscribed_at : "-"

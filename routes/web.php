@@ -11,7 +11,7 @@ use App\Http\Controllers\ForcePasswordController;
 // PUBLIC
 Route::get('/', [PipeController::class, 'publicMap'])->name('home');
 Route::get('/pipes', [PipeController::class, 'publicPipes'])->name('user.pipes');
-Route::get('/customers', [CustomerController::class, 'publicCustomers'])->name('user.customers');
+// Route::get('/customers', [CustomerController::class, 'publicCustomers'])->name('user.customers');
 
 // AUTH USER
 Route::middleware(['auth'])->group(function () {

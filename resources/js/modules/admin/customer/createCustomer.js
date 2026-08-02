@@ -11,6 +11,40 @@ const createCancel = document.getElementById("customerCreateCancel");
 
 let selectingLocation = false;
 
+async function fillAddress(lat, lng) {
+    const addressField = document.getElementById("customer_address");
+
+    addressField.value = "Mengambil alamat...";
+
+    try {
+        const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}&accept-language=id`,
+            {
+                headers: {
+                    Accept: "application/json"
+                }
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Gagal mengambil alamat");
+        }
+
+        const data = await response.json();
+
+        addressField.value = data.display_name || "";
+    } catch (error) {
+        console.error(error);
+
+        addressField.value = "";
+
+        showToast(
+            "Gagal mengambil alamat.",
+            "error"
+        );
+    }
+}
+
 function hideUI(){
     document.querySelectorAll(".draw-hide").forEach(el=>{
         el.style.opacity="0";
@@ -65,7 +99,7 @@ function startSelecting(){
 btnDesktop?.addEventListener("click",startSelecting);
 btnMobile?.addEventListener("click",startSelecting);
 
-map.on("click",(e)=>{
+map.on("click", async (e)=>{
     if(!selectingLocation) return;
 
     selectingLocation = false;
@@ -86,11 +120,21 @@ map.on("click",(e)=>{
     document.getElementById("customer_lat").value=e.latlng.lat.toFixed(7);
     document.getElementById("customer_lng").value=e.latlng.lng.toFixed(7);
 
-    customerMarker.on("dragend",function(){
+    await fillAddress(
+        e.latlng.lat,
+        e.latlng.lng
+    );
+
+    customerMarker.on("dragend", async function(){
         const pos=this.getLatLng();
 
         document.getElementById("customer_lat").value=pos.lat.toFixed(7);
         document.getElementById("customer_lng").value=pos.lng.toFixed(7);
+
+        await fillAddress(
+            pos.lat,
+            pos.lng
+        );
     });
 
     openModal();
@@ -132,7 +176,7 @@ document.getElementById("saveCustomer").addEventListener("click",async()=>{
 
     if(subscribedAt === ""){
         showToast(
-            "Tanggal berlangganan wajib diisi",
+            "Mengajukan sambungan wajib diisi",
             "error"
         );
 
@@ -222,4 +266,25 @@ document.getElementById("saveCustomer").addEventListener("click",async()=>{
     }
 
     showUI();
+});
+
+document.addEventListener("keydown", (e) => {
+    if (modal.classList.contains("hidden")) return;
+
+    if (
+        document.activeElement.tagName === "TEXTAREA" &&
+        e.key === "Enter"
+    ) {
+        return;
+    }
+
+    if (e.key === "Escape") {
+        e.preventDefault();
+        btnCancel.click();
+    }
+
+    if (e.key === "Enter") {
+        e.preventDefault();
+        document.getElementById("saveCustomer").click();
+    }
 });

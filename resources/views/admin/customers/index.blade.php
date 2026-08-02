@@ -51,7 +51,7 @@
                                 Alamat
                             </th>
                             <th class="px-4 py-3 min-w-[180px] text-center whitespace-nowrap">
-                                Mulai Berlangganan
+                                Mengajukan Sambungan
                             </th>
                             <th class="px-4 py-3 min-w-[110px] text-center">
                                 Aksi
@@ -144,7 +144,7 @@
                 </div>
                 <div>
                     <label class="text-sm">
-                        Mulai Berlangganan
+                        Mengajukan Sambungan
                     </label>
                     <input type="date" id="editCustomerSubscribedAt" class="w-full border rounded-lg p-2">
                 </div>

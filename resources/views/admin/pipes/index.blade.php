@@ -224,7 +224,7 @@
                     </div>
                     <div>
                         <label class="text-sm">Panjang (m)</label>
-                        <input type="number" id="edit_length" class="w-full border rounded-lg p-2" readonly>
+                        <input type="number" id="edit_length" class="w-full border rounded-lg p-2">
                     </div>
                 </div>
                 <div class="flex justify-end mt-6 space-x-2">

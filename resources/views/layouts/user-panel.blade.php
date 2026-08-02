@@ -93,7 +93,7 @@
             </a>
 
             {{-- DATA PELANGGAN --}}
-            <a href="{{ route('user.customers') }}"
+            {{-- <a href="{{ route('user.customers') }}"
             class="group flex items-center gap-3 px-3 py-2 rounded-lg
             {{ request()->routeIs('user.customers')
             ? 'bg-gray-800 text-white'
@@ -105,7 +105,7 @@
                 : 'inline-block'">
                     Data Pelanggan
                 </span>
-            </a>
+            </a> --}}
         </nav>
 
         {{-- LOGIN ADMIN --}}

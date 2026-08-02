@@ -51,8 +51,14 @@ class PipeController extends Controller
             $maxInstalled
         ]);
 
-        $minYear = min($yearsCollection) ?? date('Y');
-        $maxYear = max($yearsCollection) ?? date('Y');
+        if (empty($yearsCollection)) {
+            $minYear = date('Y');
+            $maxYear = date('Y');
+        } else {
+            $minYear = min($yearsCollection);
+            $maxYear = max($yearsCollection);
+        }
+
         $years = range($minYear, $maxYear);
 
         return view('admin.pipes.index', compact(
@@ -73,23 +79,35 @@ class PipeController extends Controller
 
         $customers = Customer::latest()->get();
 
+        $minCustomer = Customer::min(DB::raw('YEAR(subscribed_at)'));
+        $maxCustomer = Customer::max(DB::raw('YEAR(subscribed_at)'));
+
         $minPlanned = Pipe::min(DB::raw('YEAR(planned_at)'));
         $minInstalled = Pipe::min(DB::raw('YEAR(installed_at)'));
+        $minCustomer = Customer::min(DB::raw('YEAR(subscribed_at)'));
 
         $maxPlanned = Pipe::max(DB::raw('YEAR(planned_at)'));
         $maxInstalled = Pipe::max(DB::raw('YEAR(installed_at)'));
+        $maxCustomer = Customer::max(DB::raw('YEAR(subscribed_at)'));
 
         $years = array_filter([
             $minPlanned,
             $minInstalled,
+            $minCustomer,
             $maxPlanned,
-            $maxInstalled
+            $maxInstalled,
+            $maxCustomer
         ]);
 
-        $minYear = min($years) ?? date('Y');
-
-        $dataMaxYear = max($years) ?? date('Y');
         $currentYear = date('Y');
+
+        if (empty($years)) {
+            $minYear = $currentYear;
+            $dataMaxYear = $currentYear;
+        } else {
+            $minYear = min($years);
+            $dataMaxYear = max($years);
+        }
 
         $maxYear = max($dataMaxYear, $currentYear);
 
@@ -179,23 +197,35 @@ class PipeController extends Controller
 
         $customers = Customer::latest()->get();
 
+        $minCustomer = Customer::min(DB::raw('YEAR(subscribed_at)'));
+        $maxCustomer = Customer::max(DB::raw('YEAR(subscribed_at)'));
+
         $minPlanned = Pipe::min(DB::raw('YEAR(planned_at)'));
         $minInstalled = Pipe::min(DB::raw('YEAR(installed_at)'));
+        $minCustomer = Customer::min(DB::raw('YEAR(subscribed_at)'));
 
         $maxPlanned = Pipe::max(DB::raw('YEAR(planned_at)'));
         $maxInstalled = Pipe::max(DB::raw('YEAR(installed_at)'));
+        $maxCustomer = Customer::max(DB::raw('YEAR(subscribed_at)'));
 
         $years = array_filter([
             $minPlanned,
             $minInstalled,
+            $minCustomer,
             $maxPlanned,
-            $maxInstalled
+            $maxInstalled,
+            $maxCustomer
         ]);
 
-        $minYear = min($years) ?? date('Y');
-
-        $dataMaxYear = max($years) ?? date('Y');
         $currentYear = date('Y');
+
+        if (empty($years)) {
+            $minYear = $currentYear;
+            $dataMaxYear = $currentYear;
+        } else {
+            $minYear = min($years);
+            $dataMaxYear = max($years);
+        }
 
         $maxYear = max($dataMaxYear, $currentYear);
 

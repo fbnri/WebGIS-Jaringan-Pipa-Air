@@ -334,7 +334,7 @@
                 </div>
                 <div>
                     <label class="text-sm">Panjang (m)</label>
-                    <input type="number" id="create_length" min="0" step="0.01" placeholder="Masukkan Panjang Pipa" class="w-full border rounded-lg p-2 bg-gray-100">
+                    <input type="number" id="create_length" min="0" step="0.01" class="w-full border rounded-lg p-2">
                 </div>
             </div>
             <div class="flex justify-end mt-6 space-x-2">
@@ -373,7 +373,7 @@
                 </div>
                 <div>
                     <label class="text-sm">
-                        Tanggal Berlangganan
+                        Mengajukan Sambungan
                     </label>
                     <input
                         type="date"

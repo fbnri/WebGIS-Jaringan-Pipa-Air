@@ -17,7 +17,7 @@ window.renderUserPipes = function(){
 
         // LOGIC STATUS BERDASARKAN TAHUN
         const isInstalled = pipe.installed_at && new Date(pipe.installed_at).getFullYear() <= selectedYear;
-        const pipeColor = isInstalled ? "royalblue" : "cyan";
+        const pipeColor = isInstalled ? "royalblue" : "#93C5FD";
         const layer = L.geoJSON(geojson, {
             style: {
                 color: pipeColor,
@@ -180,7 +180,7 @@ window.updatePipeLegend = function () {
         html += `
             <div class="flex items-center gap-2">
                 <div class="w-6 flex-shrink-0">
-                    <div class="w-6 h-1 bg-cyan-300 rounded"></div>
+                    <div class="w-6 h-1 bg-blue-300 rounded"></div>
                 </div>
                 <span>Perencanaan</span>
             </div>

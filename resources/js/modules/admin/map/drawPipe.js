@@ -110,6 +110,34 @@ function disableDrawMode(){
     clearExtendMarker();
 }
 
+function calculateLength() {
+    if (points.length < 2) {
+        const lengthInput = document.getElementById("create_length");
+
+        if (lengthInput) {
+            lengthInput.value = "";
+        }
+
+        return 0;
+    }
+
+    let total = 0;
+
+    for (let i = 1; i < points.length; i++) {
+        total += points[i - 1].distanceTo(points[i]);
+    }
+
+    const rounded = Math.round(total);
+
+    const lengthInput = document.getElementById("create_length");
+
+    if (lengthInput) {
+        lengthInput.value = rounded;
+    }
+
+    return rounded;
+}
+
 function redrawLine(){
     if(tempLine){
         map.removeLayer(tempLine);
@@ -128,6 +156,8 @@ function redrawLine(){
             p.lng, p.lat
         ])
     };
+
+    calculateLength();
 }
 
 function clearExtendMarker(){
@@ -266,7 +296,7 @@ function updateExtendedPipe(){
             pipe_type:window.currentPipe.pipe_type,
             planned_at:window.currentPipe.planned_at,
             installed_at:window.currentPipe.installed_at,
-            length:window.currentPipe.length,
+            length: calculateLength(),
             geometry:window.tempGeometry
         })
     })

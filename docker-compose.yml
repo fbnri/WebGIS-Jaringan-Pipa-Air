@@ -1,0 +1,74 @@
+services:
+
+  app:
+    build: .
+    container_name: webgis-app
+
+    restart: unless-stopped
+
+    working_dir: /var/www
+
+    volumes:
+      - ./:/var/www
+
+    env_file:
+      - .env
+
+    depends_on:
+      - mysql
+
+  nginx:
+    image: nginx:latest
+
+    container_name: webgis-nginx
+
+    restart: unless-stopped
+
+    ports:
+      - "8000:80"
+
+    volumes:
+      - ./:/var/www
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+
+    depends_on:
+      - app
+
+  mysql:
+    image: mysql:8.0
+
+    container_name: webgis-mysql
+
+    restart: unless-stopped
+
+    environment:
+      MYSQL_DATABASE: webgis_pdam
+      MYSQL_ROOT_PASSWORD: root
+
+    ports:
+      - "3307:3306"
+
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+
+    container_name: webgis-phpmyadmin
+
+    restart: unless-stopped
+
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: root
+
+    ports:
+      - "8081:80"
+
+    depends_on:
+      - mysql
+
+volumes:
+  mysql-data:

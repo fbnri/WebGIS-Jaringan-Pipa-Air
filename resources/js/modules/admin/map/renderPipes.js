@@ -28,7 +28,7 @@ window.renderPipes = function(){
             hasPlanning = true;
         }
 
-        const pipeColor = isInstalled ? "royalblue" : "cyan";
+        const pipeColor = isInstalled ? "royalblue" : "#93C5FD";
         const layer = L.geoJSON(geojson,{
             style:{
                 color: pipeColor,

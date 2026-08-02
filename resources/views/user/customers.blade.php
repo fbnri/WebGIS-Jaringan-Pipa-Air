@@ -48,7 +48,7 @@
                             Alamat
                         </th>
                         <th class="px-4 py-3 min-w-[180px]">
-                            Mulai Berlangganan
+                            Mengajukan Sambungan
                         </th>
                     </tr>
                 </thead>

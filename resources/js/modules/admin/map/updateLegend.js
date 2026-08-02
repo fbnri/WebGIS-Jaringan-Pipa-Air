@@ -24,7 +24,7 @@ export default function updateLegend({
     if (hasPlanning) {
         html += `
             <div class="flex items-center gap-2">
-                <div class="w-6 h-1 bg-cyan-300 rounded flex-shrink-0"></div>
+                <div class="w-6 h-1 bg-blue-300 rounded flex-shrink-0"></div>
                 <span>Perencanaan</span>
             </div>
         `;

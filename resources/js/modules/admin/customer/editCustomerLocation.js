@@ -9,6 +9,31 @@ const info = document.getElementById("customerLocationInfo");
 const finish = document.getElementById("customerLocationFinish");
 const cancel = document.getElementById("customerLocationCancel");
 
+async function getAddress(lat, lng) {
+    try {
+        const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}&accept-language=id`,
+            {
+                headers: {
+                    Accept: "application/json"
+                }
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Gagal mengambil alamat");
+        }
+
+        const data = await response.json();
+
+        return data.display_name || "";
+    } catch (error) {
+        console.error(error);
+
+        return "";
+    }
+}
+
 function hideUI(){
     document.querySelectorAll(".draw-hide").forEach(el=>{
         el.style.opacity="0";
@@ -75,6 +100,14 @@ finish.onclick = async ()=>{
 
     const pos = editMarker.getLatLng();
 
+    const newAddress = await getAddress(
+        pos.lat,
+        pos.lng
+    );
+
+    finish.disabled = true;
+    finish.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
     try{
         const response = await fetch(
             `/admin/customers/${currentCustomer.id}`,
@@ -89,7 +122,7 @@ finish.onclick = async ()=>{
                 },
                 body:JSON.stringify({
                     name:currentCustomer.name,
-                    address:currentCustomer.address,
+                    address:newAddress,
                     latitude:pos.lat,
                     longitude:pos.lng,
                     subscribed_at: currentCustomer.subscribed_at
@@ -108,6 +141,7 @@ finish.onclick = async ()=>{
 
         currentCustomer.latitude = pos.lat;
         currentCustomer.longitude = pos.lng;
+        currentCustomer.address = newAddress;
 
         editMarker.dragging.disable();
 
@@ -119,6 +153,9 @@ finish.onclick = async ()=>{
         editing = false;
 
         renderCustomers();
+
+        finish.disabled = false;
+        finish.innerHTML = '<i class="fa-solid fa-check"></i>';
 
         showToast(
             "Lokasi pelanggan berhasil diperbarui",
