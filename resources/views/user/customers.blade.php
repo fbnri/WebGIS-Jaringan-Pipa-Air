@@ -10,7 +10,7 @@
                 Data Pelanggan
             </h1>
             <p class="text-sm text-gray-500">
-                Informasi pelanggan jaringan PDAM
+                Informasi pelanggan jaringan pipa air
             </p>
         </div>
 
